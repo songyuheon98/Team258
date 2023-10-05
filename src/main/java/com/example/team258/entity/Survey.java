@@ -1,6 +1,7 @@
 package com.example.team258.entity;
 
 import com.example.team258.answer.Answer;
+import com.example.team258.dto.SurveyRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,8 +43,23 @@ public class Survey extends Timestamped{
     @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "survey")
     private List<Answer> answers = new ArrayList<>();
 
-    public void addUser(User user){
-        this.user = user;
+    public Survey(SurveyRequestDto requestDto, User user) {
+        this.question = requestDto.getQuestion();
+        this.choices = requestDto.getChoices();
+        this.maxChoice = requestDto.getMaxChoice();
+        this.deadline = requestDto.getDeadline();
+        addUser(user);
     }
 
+    public void addUser(User user){
+        this.user = user;
+        user.addSurvey(this);
+    }
+
+    public void update(SurveyRequestDto requestDto) {
+        this.question = requestDto.getQuestion();
+        this.choices = requestDto.getChoices();
+        this.maxChoice = requestDto.getMaxChoice();
+        this.deadline = requestDto.getDeadline();
+    }
 }
