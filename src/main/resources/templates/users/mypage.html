@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+<body>
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div class="container-container1">
+    <span class="container-text"><span>My Page</span></span>
+
+    <form accept-charset="UTF-8" id="update-form" action="" method="">
+
+      <div class="mb-3">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-control" type="text" placeholder="your ID" name="username" id="username" readonly/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="password1">Password</label>
+        <input class="form-control" type="password" placeholder="Enter your new password" name="password1" id="password1" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="password2">Confirm Password</label>
+        <input class="form-control" type="password" placeholder="Confirm your new password" name="password2" id="password2" />
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-outline-primary" id="modifyUser-button" >Save Password</button>
+        <button type="button" class="btn btn-outline-danger" id="escape-button">Leave Membership</button>
+      </div>
+
+    </form>
+
+  </div>
+  <br>
+  <div class="container-container1">
+    <div class="">
+      <button type="button" class="btn btn-outline-warning" id="move-mybooks-button" >Move to My Books Page</button>
+    </div>
+  </div>
+
+  <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
+
+</div>
+
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

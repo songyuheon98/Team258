@@ -30,6 +30,7 @@ public class Book {
     @Column(name = "book_publish", nullable = false)
     private LocalDateTime bookPublish;
 
+    @Builder.Default
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private BookStatusEnum bookStatus=BookStatusEnum.POSSIBLE;

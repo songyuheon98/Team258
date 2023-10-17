@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/admin/categories")
 @RequiredArgsConstructor
-public class AdminCategoryController {
+public class AdminCategoriesController {
     private final AdminCategoriesService adminCategoriesService;
 
     // CREATE

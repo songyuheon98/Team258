@@ -1,5 +1,6 @@
 package com.example.team258.service;
 
+import com.example.team258.dto.UserUpdateRequestDto;
 import com.example.team258.dto.UserSignupRequestDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.User;
@@ -9,6 +10,7 @@ import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,5 +89,21 @@ public class UserService {
         response.addCookie(cookie);
 
         return new ResponseEntity<>(new MessageDto("회원탈퇴가 완료되었습니다"), null, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<MessageDto> update(UserUpdateRequestDto requestDto) {
+        if(!requestDto.getPassword1().equals(requestDto.getPassword2())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        User securityUser = SecurityUtil.getPrincipal().get();
+        User user = userRepository.findByUsername(securityUser.getUsername()).orElseThrow(
+               ()->new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
+        );
+        String passwordE = passwordEncoder.encode(requestDto.getPassword1());
+        user.update(passwordE);
+
+        return new ResponseEntity<>(new MessageDto("회원 정보 수정이 완료되었습니다"), null, HttpStatus.OK);
     }
 }

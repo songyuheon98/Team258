@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +30,16 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-
+    @Builder.Default
     @OneToMany(orphanRemoval = true,mappedBy = "user")
     private List<BookReservation> bookReservations = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<BookRent> bookRents = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<BookApplyDonation> bookApplyDonations = new ArrayList<>();
@@ -64,6 +65,10 @@ public class User extends Timestamped{
 
     public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
         this.bookApplyDonations.add(bookApplyDonation);
+    }
+
+    public void update(String passwordE){
+        this.password=passwordE;
     }
 
 }

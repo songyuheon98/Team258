@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- 헤드 레이아웃 적용 -->
-<head th:replace="~{layout :: head}"></head>
+<head th:replace="~{layout :: head}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/signup.js"></script>
+</head>
 <body>
 <!-- 네비게이션 메뉴 레이아웃 적용 -->
 <div th:replace="~{layout :: nav}"></div>
@@ -13,32 +16,34 @@
 
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
   <div class="container-container1">
-    <span class="container-text"><span>My Page</span></span>
+    <span class="container-text"><span>도서 등록</span></span>
 
-    <form accept-charset="UTF-8" action="" method="">
+    <form accept-charset="UTF-8" id="signup-form" action="" method="">
 
       <div class="mb-3">
         <label class="form-label" for="username">Username</label>
         <input class="form-control" type="text" placeholder="Enter your name(ID)" name="username" id="username" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="password">Password</label>
-        <input class="form-control" type="password" placeholder="Enter your password" name="password" id="password" />
+        <label class="form-label" for="password1">Password</label>
+        <input class="form-control" type="password" placeholder="Enter your password" name="password1" id="password1" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="password2">Confirm Password</label>
+        <input class="form-control" type="password" placeholder="Confirm your password" name="password2" id="password2" />
       </div>
       <div class="">
-        <button type="button" class="btn btn-outline-primary" onclick="modifyUser()">Save Changes</button>
-        <button type="button" class="btn btn-outline-danger" onclick="escapeUser()">Leave Membership</button>
+        <button type="button" id="signup-button" class="btn btn-outline-danger">SignUp</button>
       </div>
 
     </form>
 
   </div>
 
-  <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
-
 </div>
 
 <!-- 푸터 레이아웃 적용 -->
 <div th:replace="~{layout :: footer}"></div>
 </body>
+
 </html>

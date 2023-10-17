@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <div class="container">
+    <div class="container-container1">
+      <span class="container-text"><span>User List - ADMIN ONLY</span></span>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>UserId</th>
+          <th>User Name</th>
+          <th>User Role</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+          <td><input class="form-control" type="text" th:value="${user.userId}" name="userId" readonly/></td>
+          <td><input class="form-control" type="text" th:value="${user.username}" name="username" readonly/></td>
+          <td><input class="form-control" type="text" th:value="${user.role}" name="role" readonly/></td>
+          <td><button type="button" class="btn btn-outline-danger" th:onclick="'deleteUser(\'' + ${user.userId} + '\')'">Delete User</button></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

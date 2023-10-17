@@ -24,7 +24,7 @@ public class BookCategory {
     @Column(name="book_category_name")
     private String bookCategoryName;
 
-
+    @Builder.Default
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "bookCategory")
     private List<Book> books = new ArrayList<>();
 

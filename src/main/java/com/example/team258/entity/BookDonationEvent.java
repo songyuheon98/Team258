@@ -28,6 +28,7 @@ public class BookDonationEvent {
     private LocalDateTime closedAt;
 
     // 단 방향
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name="donation_id")
     private List<BookApplyDonation> bookApplyDonations=new ArrayList<>();
