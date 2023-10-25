@@ -19,7 +19,7 @@ public class CategoriesViewController {
 
     @GetMapping("/admin/categories")
     public String categories( @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, // 현재 페이지, 페이지 크기
-                              @RequestParam(defaultValue = "bookCategoryName") String sort, @RequestParam(defaultValue = "ASC") String direction, // 정렬 기준, 정렬 방향
+                              @RequestParam(defaultValue = "bookCategoryId") String sort, @RequestParam(defaultValue = "ASC") String direction, // 정렬 기준, 정렬 방향
                               @RequestParam(name = "keyword", required = false) String keyword, // 검색 키워드
                               @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 
