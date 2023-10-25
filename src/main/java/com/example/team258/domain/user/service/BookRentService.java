@@ -11,8 +11,10 @@ import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.entity.User;
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.UserRepository;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +37,9 @@ public class BookRentService {
     }
     @Transactional
     public MessageDto createRental(Long bookId, User user) {
-        Book book = bookRepository.findById(bookId)
+        Book book = bookRepository.findByIdLock(bookId)
                 .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
-        User savedUser = userRepository.findById(user.getUserId())
+        User savedUser = userRepository.findByIdFetchBookRent(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         if (book.getBookStatus() != BookStatusEnum.POSSIBLE) {
             throw new IllegalArgumentException("책이 대여 가능한 상태가 아닙니다.");

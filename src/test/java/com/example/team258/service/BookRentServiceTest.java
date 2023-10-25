@@ -98,8 +98,8 @@ class BookRentServiceTest {
                 .returnDate(LocalDateTime.parse("2026-08-11T19:16:01"))
                 .build();
         //when
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(book1));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(bookRepository.findByIdLock(1L)).thenReturn(Optional.of(book1));
+        when(userRepository.findByIdFetchBookRent(1L)).thenReturn(Optional.of(user1));
         when(bookRentRepository.save(any(BookRent.class))).thenReturn(bookRent1);
         //then
         MessageDto result = bookRentService.createRental(1L, user1);
@@ -125,8 +125,8 @@ class BookRentServiceTest {
         //given
 
         //when
-        when(bookRepository.findById(2L)).thenReturn(Optional.of(book2));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(bookRepository.findByIdLock(2L)).thenReturn(Optional.of(book2));
+        when(userRepository.findByIdFetchBookRent(1L)).thenReturn(Optional.of(user1));
         //then
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
                 bookRentService.createRental(2L, user1));
