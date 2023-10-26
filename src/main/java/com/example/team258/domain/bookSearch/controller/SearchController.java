@@ -3,9 +3,13 @@ package com.example.team258.domain.bookSearch.controller;
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.domain.bookSearch.service.SearchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -17,6 +21,13 @@ public class SearchController {
     public ResponseEntity<Page<BookResponseDto>> getAllBooks(@RequestParam("page") int page) {
         return ResponseEntity.ok(searchService.getAllBooks(page - 1));
     }
+
+    @GetMapping("/v2")
+    public ResponseEntity<List<BookResponseDto>> getAllBooksSlice(@RequestParam("page") int page, @RequestParam("size") @DefaultValue("10") int size) {
+        Slice<BookResponseDto> booksSlice = searchService.getAllBooksV2(page, size);
+        return ResponseEntity.ok(booksSlice.getContent());
+    }
+
 
     @GetMapping("/{bookId}")
     public ResponseEntity<BookResponseDto> getBookById(@PathVariable Long bookId) {

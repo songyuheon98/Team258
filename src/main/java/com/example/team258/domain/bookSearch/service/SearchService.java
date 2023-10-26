@@ -4,14 +4,12 @@ import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookCategory;
 import com.example.team258.common.entity.QBook;
+import com.example.team258.common.repository.CustomBookRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
 import com.example.team258.common.repository.BookRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +21,7 @@ import java.util.List;
 public class SearchService {
     private final BookRepository bookRepository;
     private final BookCategoryRepository bookCategoryRepository;
-
+    private final CustomBookRepository customBookRepository;
 
 
     public Page<BookResponseDto> getAllBooks(int page) {
@@ -119,5 +117,36 @@ public class SearchService {
             answer.addAll(saveAllCategories(tmp));
         }
         return answer;
+    }
+
+    public Slice<BookResponseDto> getAllBooksV2(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Slice<Book> booksSlice = bookRepository.findAll(pageable);
+        List<BookResponseDto> bookResponseDtos = booksSlice.map(BookResponseDto::new).getContent();
+        return new SliceImpl<>(bookResponseDtos, pageable, booksSlice.hasNext());
+    }
+
+    public Slice<BookResponseDto> getAllBooksByCategoryOrKeywordV4(String bookCategoryName, String keyword, int page) {
+        QBook qBook = QBook.book;
+        BooleanBuilder builder = new BooleanBuilder();
+        List<BookCategory> bookCategories = null;
+
+        if (bookCategoryName != null) {
+            BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
+            bookCategories = saveAllCategories(bookCategory);
+        }
+
+        if (keyword != null)
+            builder.and(qBook.bookName.contains(keyword));
+        if (bookCategories != null)
+            builder.and(qBook.bookCategory.in(bookCategories));
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "bookId");
+        Pageable pageable = PageRequest.of(page, 20, sort);
+
+        // Slice로 변경
+        Slice<BookResponseDto> bookList = customBookRepository.findAllSliceBooks(builder, pageable).map(BookResponseDto::new);
+        System.out.println(bookList.hasNext());
+        return bookList;
     }
 }
