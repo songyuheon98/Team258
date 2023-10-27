@@ -43,7 +43,7 @@ class BookDonationEventMixedControllerTest {
         //then
         mockMvc.perform(get("/users/bookDonationEvent"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/users/bookDonationEvent"));
+                .andExpect(view().name("users/bookDonationEvent"));
 
     }
 
@@ -56,7 +56,7 @@ class BookDonationEventMixedControllerTest {
         //then
         mockMvc.perform(get("/users/bookDonationEvent/v3"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/users/bookDonationEventV2"));
+                .andExpect(view().name("users/bookDonationEventV2"));
     }
 
     @Test
@@ -68,6 +68,6 @@ class BookDonationEventMixedControllerTest {
         // then
         mockMvc.perform(get("/users/bookDonationEvent/{donationId}/v2",1L))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/users/bookApplyDonationV2"));
+                .andExpect(view().name("users/bookApplyDonationV2"));
     }
 }

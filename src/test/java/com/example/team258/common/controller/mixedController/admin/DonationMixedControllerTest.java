@@ -52,7 +52,7 @@ class DonationMixedControllerTest {
         // then
         mockMvc.perform(get("/admin/donation/v3"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/donationV3"));
+                .andExpect(view().name("admin/donationV3"));
     }
 
     @Test
@@ -66,6 +66,6 @@ class DonationMixedControllerTest {
         // then
         mockMvc.perform(get("/admin/donation/bookSetting/{donationId}/v3",1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/bookSettingV2"));
+                .andExpect(view().name("admin/bookSettingV2"));
     }
 }
