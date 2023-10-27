@@ -7,6 +7,27 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/js/admin/books.js"></script>
 </head>
+<style>
+
+  .datepicker-days {
+
+    display: none ;
+
+  }
+
+  .datepicker-months {
+
+    display: none ;
+
+  }
+
+  .datepicker-years {
+
+    display: block ;
+
+  }
+
+</style>
 <body>
 <!-- 네비게이션 메뉴 레이아웃 적용 -->
 <div th:insert="~{layout :: nav}"></div>
@@ -38,8 +59,15 @@
         <input class="form-control" type="text" placeholder="Enter BookAuthor" name="bookAuthor" id="bookAuthor" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="BookPublish">Book's Published Date</label>
-        <input class="form-control" type="date" placeholder="Choose the date" name="bookPublish" id="bookPublish" />
+        <label class="form-label" for="year">Book's Published Year</label>
+        <select class="form-control" name="year" id="year">
+          <!-- 여기에 년도 옵션을 동적으로 추가하거나 수동으로 입력하세요 -->
+          <!-- 예: 2020년부터 2030년까지 옵션을 추가하는 경우 -->
+          <!-- <option value="2020">2020</option> -->
+          <!-- <option value="2021">2021</option> -->
+          <!-- ... -->
+          <!-- <option value="2030">2030</option> -->
+        </select>
       </div>
       <div class="">
         <button type="button" id="register-book-button" class="btn btn-outline-danger">Register New Book</button>
@@ -49,7 +77,6 @@
         <button type="button" id="manage-book-button" class="btn btn-outline-info">Manage Books</button>
       </div>
     </form>
-
   </div>
 
 </div>

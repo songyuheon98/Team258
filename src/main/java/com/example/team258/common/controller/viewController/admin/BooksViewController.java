@@ -39,6 +39,7 @@ public class BooksViewController {
                                         @RequestParam(defaultValue = "bookId") String sort, @RequestParam(defaultValue = "ASC") String direction, // 정렬 기준, 정렬 방향
                                         @RequestParam(value = "keyword", required = false) String keyword, // 검색 키워드
                                         @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        long startTime = System.currentTimeMillis();//실행시간 측정
 
         Sort.Direction sortDirection = Sort.Direction.fromString(direction);
 
@@ -51,6 +52,12 @@ public class BooksViewController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", booksPageResponseDto.getTotalPages());
 
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
         return "admin/booksManage";
+
     }
 }
