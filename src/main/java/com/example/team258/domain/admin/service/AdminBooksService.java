@@ -14,12 +14,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,40 +75,70 @@ public class AdminBooksService {
     //    return new BooksPageResponseDto(booksResponseDtos, totalPages);
     //}
 
-    // 검색페이징 조회 부분의 JPQL 구현
+    // 초기 JPA 단계에서의 검색페이징 조회 기능 코드
     public BooksPageResponseDto findBooksWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
-        // JPQL 쿼리 문자열
-        String jpql = "SELECT b FROM book b WHERE 1 = 1";
+        // 검색어가 있을 경우 검색 조건을 추가
+        if (StringUtils.hasText(keyword)) {
+            // 여기에서 검색 조건을 추가하면 됩니다.
+            // 여기서는 도서명에 대한 검색을 예시로 들었습니다.
+            Page<Book> booksPage = adminBooksRepository.findByBookNameContainingIgnoreCase(keyword, pageable);
 
-        // 검색어가 주어진 경우, 도서명에 대한 검색 조건 추가
-        if (StringUtils.hasText(keyword))
-            jpql += " AND LOWER(b.bookName) LIKE LOWER(:keyword)";
+            List<AdminBooksResponseDto> adminBooksResponseDtos = booksPage.getContent()
+                    .stream()
+                    .map(AdminBooksResponseDto::new)
+                    .collect(Collectors.toList());
 
-        // JPQL 쿼리 실행
-        TypedQuery<Book> query = entityManager.createQuery(jpql, Book.class);
+            return new BooksPageResponseDto(adminBooksResponseDtos, booksPage.getTotalPages());
+        } else {
+            // 검색어가 없을 경우 전체 목록을 가져옵니다.
+            Page<Book> booksPage = adminBooksRepository.findAll(pageable);
 
-        // 파라미터 바인딩
-        if (StringUtils.hasText(keyword))
-            query.setParameter("keyword", "%" + keyword + "%");
+            List<AdminBooksResponseDto> adminBooksResponseDtos = booksPage.getContent()
+                    .stream()
+                    .map(AdminBooksResponseDto::new)
+                    .collect(Collectors.toList());
 
-        // 페이징 처리
-        query.setFirstResult((int) pageable.getOffset());
-        query.setMaxResults(pageable.getPageSize());
-
-        // 조회된 엔티티를 Dto로 변환
-        List<AdminBooksResponseDto> booksResponseDtos = query.getResultList().stream()
-                .map(AdminBooksResponseDto::new)
-                .toList();
-
-        // 전체 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) getTotalBooksCount(keyword) / pageable.getPageSize());
-
-        // 결과를 포함한 응답 Dto 반환
-        return new BooksPageResponseDto(booksResponseDtos, totalPages);
+            return new BooksPageResponseDto(adminBooksResponseDtos, booksPage.getTotalPages());
+        }
     }
+
+    // 검색페이징 조회 부분의 JPQL 구현
+    //public BooksPageResponseDto findBooksWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
+    //    // 로그인한 사용자 관리자 확인
+    //    validateUserAuthority(loginUser);
+    //
+    //    // JPQL 쿼리 문자열
+    //    String jpql = "SELECT b FROM book b WHERE 1 = 1";
+    //
+    //    // 검색어가 주어진 경우, 도서명에 대한 검색 조건 추가
+    //    if (StringUtils.hasText(keyword))
+    //        jpql += " AND LOWER(b.bookName) LIKE LOWER(:keyword)";
+    //
+    //    // JPQL 쿼리 실행
+    //    TypedQuery<Book> query = entityManager.createQuery(jpql, Book.class);
+    //
+    //    // 파라미터 바인딩
+    //    if (StringUtils.hasText(keyword))
+    //        query.setParameter("keyword", "%" + keyword + "%");
+    //
+    //    // 페이징 처리
+    //    query.setFirstResult((int) pageable.getOffset());
+    //    query.setMaxResults(pageable.getPageSize());
+    //
+    //    // 조회된 엔티티를 Dto로 변환
+    //    List<AdminBooksResponseDto> booksResponseDtos = query.getResultList().stream()
+    //            .map(AdminBooksResponseDto::new)
+    //            .toList();
+    //
+    //    // 전체 페이지 수 계산
+    //    int totalPages = (int) Math.ceil((double) getTotalBooksCount(keyword) / pageable.getPageSize());
+    //
+    //    // 결과를 포함한 응답 Dto 반환
+    //    return new BooksPageResponseDto(booksResponseDtos, totalPages);
+    //}
 
     // 검색어에 따른 전체 도서 개수 조회
     private Long getTotalBooksCount(String keyword) {

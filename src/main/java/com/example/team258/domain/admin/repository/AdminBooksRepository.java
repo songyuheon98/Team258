@@ -15,4 +15,7 @@ public interface AdminBooksRepository extends JpaRepository<Book, Long>, Queryds
     Page<Book> findAll(Specification<Book> spec, Pageable pageable);
 
     Optional<Book> findByBookName(String bookName);
+
+    // 초기 JPA 단계에서의 검색페이징 조회 기능 코드
+    Page<Book> findByBookNameContainingIgnoreCase(String keyword, Pageable pageable);
 }
