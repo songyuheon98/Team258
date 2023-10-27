@@ -76,6 +76,7 @@ public class AdminBooksService {
     //}
 
     // 초기 JPA 단계에서의 검색페이징 조회 기능 코드
+    // JPA 단계 + JPQL 어노테이션 방식의 검색페이징 조회 기능 코드는 서비스의 코드 변화가 없음(간단)
     public BooksPageResponseDto findBooksWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
