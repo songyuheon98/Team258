@@ -7,10 +7,14 @@ import com.example.team258.domain.donation.dto.BookApplyDonationRequestDto;
 import com.example.team258.domain.donation.dto.BookApplyDonationResponseDto;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,13 +22,22 @@ import java.util.List;
 public class BookApplyDonationController {
 
     private final BookApplyDonationService bookApplyDonationService;
+    private final Lock lock=new ReentrantLock();
+
     @PostMapping("/bookApplyDonation")
     public ResponseEntity<MessageDto> createBookApplyDonation(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
-        return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto));
+        try{
+            lock.lock();
+            return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto));
+        }
+        finally {
+            lock.unlock();
+        }
     }
 
     @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
+
         return ResponseEntity.ok().body(bookApplyDonationService.deleteBookApplyDonation(applyId));
     }
 

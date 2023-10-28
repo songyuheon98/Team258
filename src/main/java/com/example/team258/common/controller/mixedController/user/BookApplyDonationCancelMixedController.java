@@ -30,7 +30,7 @@ public class BookApplyDonationCancelMixedController {
     public String bookApplyDonationCancelPage(Model model) {
         UserBookApplyCancelPageResponseDto userBookApplyCancelPageResponseDto = bookApplyDonationService.getDonationBooksCancel();
         model.addAttribute("userBookApplyCancelPageResponseDto", userBookApplyCancelPageResponseDto);
-        return "/users/bookApplyDonationCancel";
+        return "users/bookApplyDonationCancel";
     }
 
     @GetMapping
@@ -39,6 +39,6 @@ public class BookApplyDonationCancelMixedController {
 
         model.addAttribute("books", bookResponseDtos);
 
-        return "/users/bookApplyDonation";
+        return "users/bookApplyDonation";
     }
 }

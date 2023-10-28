@@ -187,6 +187,8 @@ class UserServiceTest {
 
         // when
         given(securityUtil.getPrincipal()).willReturn(Optional.ofNullable(user));
+        when(userRepository.findByUsername(requestDto.getUsername())).thenReturn(Optional.of(user));
+
         doNothing().when(userRepository).delete(user);
 
         MessageDto msg = userService.escape().getBody();

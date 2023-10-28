@@ -46,6 +46,7 @@ public class AdminUsersService {
 
         //대여기록 삭제를 위한 Book에서의 연관관계 삭제
         List<BookRent> bookRents = user.getBookRents();
+
         for (BookRent bookRent : bookRents) {
             bookRent.getBook().deleteRental();
         }
