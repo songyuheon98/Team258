@@ -65,22 +65,24 @@ public class BookApplyDonationService {
          * 누군가 먼저 신청했을때
          */
         if(book.getBookApplyDonation()!=null){
-            return new MessageDto("이미 누군가 먼저 신청했습니다.");
+//            return new MessageDto("이미 누군가 먼저 신청했습니다.");
+            throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
         }
         /**
          * 나눔 이벤트 시간이 아닐때
          */
-        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findFetchJoinById(bookApplyDonationRequestDto.getDonationId())
                 .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
-            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
+//            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
+            throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
         }
         /**
          * 신청자가 도서관 사용자가 아닐때
          */
-        User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
+        User user = userRepository.findFetchJoinById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
         );
         /**
@@ -114,14 +116,14 @@ public class BookApplyDonationService {
         if(book.getBookApplyDonation()!=null){
             throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
         }
-        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findFetchJoinById(bookApplyDonationRequestDto.getDonationId())
                 .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
             throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
         }
-        User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
+        User user = userRepository.findFetchJoinById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
         );
         BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
@@ -142,14 +144,14 @@ public class BookApplyDonationService {
         if(book.getBookApplyDonation()!=null){
             throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
         }
-        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findFetchJoinById(bookApplyDonationRequestDto.getDonationId())
                 .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
             throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
         }
-        User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
+        User user = userRepository.findFetchJoinById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
         );
         BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
