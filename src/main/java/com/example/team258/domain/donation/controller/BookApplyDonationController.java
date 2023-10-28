@@ -35,6 +35,19 @@ public class BookApplyDonationController {
         }
     }
 
+    //낙관적락,비관적락 사용시
+    @PostMapping("/bookApplyDonation/v2")
+    public ResponseEntity<MessageDto> createBookApplyDonationV2(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
+            return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonationV2(bookApplyDonationRequestDto));
+    }
+
+    //Transactional SERIALIZable 사용
+    @PostMapping("/bookApplyDonation/v3")
+    public ResponseEntity<MessageDto> createBookApplyDonationV3(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
+        return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonationV3(bookApplyDonationRequestDto));
+    }
+
+
     @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
 

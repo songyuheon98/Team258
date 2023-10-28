@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -92,6 +93,64 @@ public class BookApplyDonationService {
         /**
          * book의 상태 변경
          */
+        return new MessageDto("책 나눔 신청이 완료되었습니다.");
+    }
+
+    //V2 : 낙관적락/비관적락
+    @Transactional
+    public MessageDto createBookApplyDonationV2(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
+
+//        Book book = bookRepository.findById(bookApplyDonationRequestDto.getBookId()) //비관적락 미적용
+        Book book = bookRepository.findByIdFetch(bookApplyDonationRequestDto.getBookId()) //비관적락 적용
+                .orElseThrow(()->new IllegalArgumentException("나눔 신청한 책이 존재하지 않습니다."));
+        if(book.getBookApplyDonation()!=null){
+            throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
+        }
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
+                .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
+
+        if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
+                LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
+            throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
+        }
+        User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
+                ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
+        );
+        BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
+        bookApplyDonationRepository.save(bookApplyDonation);
+        bookApplyDonation.addBook(book);
+        user.getBookApplyDonations().add(bookApplyDonation);
+        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+        book.changeStatus(BookStatusEnum.SOLD_OUT);
+        return new MessageDto("책 나눔 신청이 완료되었습니다.");
+    }
+
+    //V3 : Transactional Serealizable
+    @Transactional(isolation = Isolation.SERIALIZABLE
+    )
+    public MessageDto createBookApplyDonationV3(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
+
+        Book book = bookRepository.findById(bookApplyDonationRequestDto.getBookId())
+                .orElseThrow(()->new IllegalArgumentException("나눔 신청한 책이 존재하지 않습니다."));
+        if(book.getBookApplyDonation()!=null){
+            throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
+        }
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
+                .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
+
+        if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
+                LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
+            throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
+        }
+        User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
+                ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
+        );
+        BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
+        bookApplyDonationRepository.save(bookApplyDonation);
+        bookApplyDonation.addBook(book);
+        user.getBookApplyDonations().add(bookApplyDonation);
+        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+        book.changeStatus(BookStatusEnum.SOLD_OUT);
         return new MessageDto("책 나눔 신청이 완료되었습니다.");
     }
 
