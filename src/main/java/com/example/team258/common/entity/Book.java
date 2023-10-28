@@ -20,6 +20,9 @@ import java.util.List;
 @Getter
 @Builder
 public class Book {
+//    @Version //낙관적락 적용
+//    private Long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
