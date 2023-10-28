@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class BookApplyDonationCancelMixedControllerTest {
 
+
     @Autowired
     MockMvc mockMvc;
     @MockBean
@@ -34,9 +35,10 @@ class BookApplyDonationCancelMixedControllerTest {
         // when
         when(bookApplyDonationService.getDonationBooksCancel()).thenReturn(new UserBookApplyCancelPageResponseDto());
 
+
         // then
         mockMvc.perform(get("/users/bookApplyDonation/cancel"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/users/bookApplyDonationCancel"));
+                .andExpect(view().name("users/bookApplyDonationCancel"));
     }
 }

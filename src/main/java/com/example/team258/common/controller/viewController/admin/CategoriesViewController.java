@@ -34,11 +34,10 @@ public class CategoriesViewController {
         model.addAttribute("categories", booksCategoryPageResponseDto);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", booksCategoryPageResponseDto.getTotalPages());
-
         long endTime = System.currentTimeMillis();
         long durationTimeSec = endTime - startTime;
         System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
 
-        return "/admin/categories";
+        return "admin/categories";
     }
 }

@@ -37,7 +37,7 @@ public class BookDonationEventMixedController {
         List<BookDonationEventResponseDto> bookResponseDtos = bookDonationEventService.getDonationEvent();
         model.addAttribute("events", bookResponseDtos);
 
-        return "/users/bookDonationEvent";
+        return "users/bookDonationEvent";
     }
 
     /**
@@ -83,7 +83,7 @@ public class BookDonationEventMixedController {
         model.addAttribute("events", bookDonationEventOnlyPageResponseDto.getBookDonationEventOnlyResponseDtos());
 
 
-        return "/users/bookDonationEventV2";
+        return "users/bookDonationEventV2";
     }
 
 //
@@ -126,6 +126,6 @@ public class BookDonationEventMixedController {
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPages", bookApplyDonationEventResultDto.getTotalPages());
 
-        return "/users/bookApplyDonationV2";
+        return "users/bookApplyDonationV2";
     }
 }

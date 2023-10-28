@@ -212,7 +212,7 @@ class UserServiceTest {
     @DisplayName("CREATE 회원가입 테스트")
     void signup() {
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
-                .username("bin0222")
+                .username("bin022552")
                 .password1("Bin@12345")
                 .password2("Bin@12345")
                 .build();
@@ -221,6 +221,7 @@ class UserServiceTest {
 
         // when
         when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.empty());
         MessageDto msg = userService.signup(requestDto).getBody();
         // then
         assertThat(msg.getMsg()).isEqualTo("회원가입이 완료되었습니다");
@@ -228,7 +229,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("CREATE 회원탈퇴 테스트")
+    @DisplayName("DELETE 회원탈퇴 테스트")
     void escape() {
         // given
         /**
@@ -259,6 +260,9 @@ class UserServiceTest {
         /**
          * 모의 객체 동작 설정 : userRepository.delete(user) 메서드가 아무것도 반환하지 않도록 설정
          */
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.ofNullable(user));
+
+
         doNothing().when(userRepository).delete(user);
 
         MessageDto msg = userService.escape().getBody();

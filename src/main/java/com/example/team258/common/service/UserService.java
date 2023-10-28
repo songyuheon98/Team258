@@ -1,14 +1,14 @@
 package com.example.team258.common.service;
 
 import com.example.team258.common.dto.MessageDto;
-import com.example.team258.common.entity.QUser;
-import com.example.team258.common.entity.User;
-import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.common.entity.*;
 import com.example.team258.common.exception.DuplicateUsernameException;
 import com.example.team258.common.jwt.SecurityUtil;
 import com.example.team258.common.repository.UserRepository;
+import com.example.team258.domain.donation.entity.BookApplyDonation;
 import com.example.team258.domain.member.dto.UserSignupRequestDto;
 import com.example.team258.domain.member.dto.UserUpdateRequestDto;
+import com.example.team258.domain.user.entity.BookRent;
 import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,7 +81,8 @@ public class UserService {
 
     public ResponseEntity<MessageDto> escape() {
         String username = SecurityUtil.getPrincipal().get().getUsername();
-        userRepository.delete(userRepository.findByUsername(username).orElse(null));
+
+        deleteUser(username);
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletResponse response = attributes.getResponse();
@@ -94,6 +96,29 @@ public class UserService {
         response.addCookie(cookie);
 
         return new ResponseEntity<>(new MessageDto("회원탈퇴가 완료되었습니다"), null, HttpStatus.OK);
+    }
+
+    @Transactional
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                ()->new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
+        );
+
+        //대여기록 삭제를 위한 Book에서의 연관관계 삭제
+        for (BookRent bookRent : user.getBookRents()) {
+            bookRent.getBook().deleteRental();
+        }
+
+        int reservationsSize = user.getBookReservations().size();
+        int rentSize =user.getBookRents().size();
+        for (int i = 0; i < user.getBookApplyDonations().size(); i++) {
+            BookApplyDonation bookApplyDonation =  user.getBookApplyDonations().get(i);
+            Book book =bookApplyDonation.getBook();
+            book.changeStatus(BookStatusEnum.DONATION);
+            bookApplyDonation.removeBook(book);
+        }
+
+        userRepository.delete(user);
     }
 
     @Transactional

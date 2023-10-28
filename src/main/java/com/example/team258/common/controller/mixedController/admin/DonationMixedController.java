@@ -79,7 +79,7 @@ public class DonationMixedController {
         model.addAttribute("totalPages", donationV3ServiceResultDto.getBookDonationEventPageResponseDtoV3().getTotalPages());
         model.addAttribute("totalBookPages", donationV3ServiceResultDto.getBookPageTotals());
 
-        return "/admin/donationV3";
+        return "admin/donationV3";
     }
 
     /**
@@ -193,6 +193,6 @@ public class DonationMixedController {
         model.addAttribute("totalPages", bookResponsePageDto.getTotalPages());
         model.addAttribute("donationId", donationId);
 
-        return "/admin/bookSettingV2";
+        return "admin/bookSettingV2";
     }
 }
