@@ -19,6 +19,6 @@ public class MyPageViewController {
         // 모델에 사용자 정보 추가
         model.addAttribute("loggedInUsername", loggedInUsername);
 
-        return "/users/mypage";
+        return "users/mypage";
     }
 }
