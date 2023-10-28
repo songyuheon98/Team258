@@ -34,7 +34,7 @@ public class BookRentService {
     private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final RedissonClient redissonClient;
+//    private final RedissonClient redissonClient;
 
     @Transactional(readOnly = true)
     public List<BookRentResponseDto> getRental(User user) {
@@ -43,16 +43,20 @@ public class BookRentService {
         return savedUser.getBookRents().stream().map(BookRentResponseDto::new).toList();
     }
 
+    /**
+     * RedissonConfig를 활성화할 경우 현재 github action의 테스트코드 실행시 redis를 실행하지 못해 오류가 발생함
+     * 따라서 redisson 분산락을 사용하는 아래의 코드 일부와 commom-config-RedissonConfig 파일 전문을 주석처리한 상태임
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MessageDto createRental(Long bookId, User user) {
-        RLock lock = redissonClient.getLock(String.valueOf(bookId));
-
-        try {
-            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
-                log.info("락 획득 실패");
-                throw new IllegalArgumentException("락 획득 실패");
-            }
-            log.info("락 획득 성공");
+//        RLock lock = redissonClient.getLock(String.valueOf(bookId));
+//
+//        try {
+//            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
+//                log.info("락 획득 실패");
+//                throw new IllegalArgumentException("락 획득 실패");
+//            }
+//            log.info("락 획득 성공");
 
             //로직
             Book book = bookRepository.findById(bookId)
@@ -68,16 +72,16 @@ public class BookRentService {
             savedUser.addBookRent(bookRent);
             //로직
 
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        } finally {
-            log.info("finally문 실행");
-            if (lock != null && lock.isLocked() && lock.isHeldByCurrentThread()) {
-                lock.unlock();
-                log.info("언락 실행");
-            }
-        }
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            e.printStackTrace();
+//        } finally {
+//            log.info("finally문 실행");
+//            if (lock != null && lock.isLocked() && lock.isHeldByCurrentThread()) {
+//                lock.unlock();
+//                log.info("언락 실행");
+//            }
+//        }
         return new MessageDto("도서 대출 신청이 완료되었습니다");
 
     }
