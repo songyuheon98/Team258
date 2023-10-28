@@ -1,6 +1,5 @@
 package com.example.team258.domain.donation.service;
 
-import com.example.team258.common.config.RedissonConfig;
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.dto.BookResponsePageDto;
 import com.example.team258.common.dto.MessageDto;
@@ -46,7 +45,7 @@ public class BookApplyDonationService {
     private final BookDonationEventRepository bookDonationEventRepository;
     private final BookApplyDonationRepository bookApplyDonationRepository;
     private final UserRepository userRepository;
-    private final RedissonClient redissonClient;
+//    private final RedissonClient redissonClient;
     private final BookApplyDonationService2 bookApplyDonationService2;
 
     @Transactional
@@ -65,8 +64,8 @@ public class BookApplyDonationService {
          * 누군가 먼저 신청했을때
          */
         if(book.getBookApplyDonation()!=null){
-//            return new MessageDto("이미 누군가 먼저 신청했습니다.");
-            throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
+            return new MessageDto("이미 누군가 먼저 신청했습니다.");
+//            throw new IllegalArgumentException("이미 누군가 먼저 신청했습니다.");
         }
         /**
          * 나눔 이벤트 시간이 아닐때
@@ -76,8 +75,8 @@ public class BookApplyDonationService {
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
-//            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
-            throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
+            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
+//            throw new IllegalArgumentException("책 나눔 이벤트 기간이 아닙니다.");
         }
         /**
          * 신청자가 도서관 사용자가 아닐때
@@ -170,27 +169,27 @@ public class BookApplyDonationService {
     //V4 : Redisson 사용
     public MessageDto createBookApplyDonationV4(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
 
-        RLock lock = redissonClient.getLock(String.valueOf(bookApplyDonationRequestDto.getBookId()));
-
-        try {
-            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
-                log.info("락 획득 실패");
-                throw new IllegalArgumentException("락 획득 실패");
-            }
-            log.info("락 획득 성공");
+//        RLock lock = redissonClient.getLock(String.valueOf(bookApplyDonationRequestDto.getBookId()));
+//
+//        try {
+//            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
+//                log.info("락 획득 실패");
+//                throw new IllegalArgumentException("락 획득 실패");
+//            }
+//            log.info("락 획득 성공");
 
             bookApplyDonationService2.createBookApplyDonation(bookApplyDonationRequestDto);
 
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        } finally {
-            log.info("finally문 실행");
-            if (lock != null && lock.isLocked() && lock.isHeldByCurrentThread()) {
-                lock.unlock();
-                log.info("언락 실행");
-            }
-        }
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            e.printStackTrace();
+//        } finally {
+//            log.info("finally문 실행");
+//            if (lock != null && lock.isLocked() && lock.isHeldByCurrentThread()) {
+//                lock.unlock();
+//                log.info("언락 실행");
+//            }
+//        }
         return new MessageDto("책 나눔 신청이 완료되었습니다.");
     }
 
