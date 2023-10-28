@@ -21,12 +21,15 @@ https://ohnyong.notion.site/TechBlog-TEAM-258-a1e222aa230d4caaac32452d8b425f2b?p
 - **IDE** : `IntelliJ IDEA Ultimate`
 - **Framework** : `SpringBoot`, `SpringSecurity`
 - **Database** : `MySQL`
-- **SERVER** : `Spring InnerServer(Apache Tomcat)` published by `AWS EC2`
-- **TEST** : `POSTMAN API Request`
+- **SERVER** : `Spring InnerServer(Apache Tomcat)` published by `EC2`, `S3`, `CodeDeploy`, `Github Action`
+- **TEST** : `POSTMAN API Request`, `JUnit5`, `JMeter`
 
 ## 📌 주요 내용
+### TEAM BLOG
+https://ohnyong.notion.site/TechBlog-TEAM-258-1fcb896ca14947c58d46473f1f7436bd?pvs=4
+
 ### S.A
-https://ohnyong.notion.site/Team-258-S-A-7ac23961ccee44f39c2f31ff11259633?pvs=4
+https://ohnyong.notion.site/Team-258-S-A-9940be1964354b9b9ec419acc6938480?pvs=4
 
 ### User Flow Chart
 ![스크린샷 2023-10-11 오후 2 25 16](https://github.com/yzpocket/spring-cafeservice/assets/67217259/839b1f28-55af-48e0-9e5b-c26bdb4b1dcc)
