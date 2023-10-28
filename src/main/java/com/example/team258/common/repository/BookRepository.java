@@ -58,6 +58,11 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
             "where b.bookId = :bookId")
     Optional<Book> findByIdFetch(@Param("bookId") Long bookId);
 
+    @Query("select b from book b " +
+            "left join fetch b.bookRent  " +
+            "where b.bookId = :bookId")
+    Optional<Book> findByIdFetchBookRent(@Param("bookId") Long bookId);
+
 //
 //        @Query(value = "SELECT b FROM book b ",
 //                nativeQuery = false)
