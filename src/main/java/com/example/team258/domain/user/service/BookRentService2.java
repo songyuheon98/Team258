@@ -22,7 +22,7 @@ public class BookRentService2 {
     private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final RedissonClient redissonClient;
+//    private final RedissonClient redissonClient;
 
 
     @Transactional
