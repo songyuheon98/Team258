@@ -19,6 +19,8 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -40,12 +42,13 @@ public class BookRentService {
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         return savedUser.getBookRents().stream().map(BookRentResponseDto::new).toList();
     }
-    @Transactional
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public MessageDto createRental(Long bookId, User user) {
-        RLock lock = redissonClient.getLock(bookId + ":lock");
+        RLock lock = redissonClient.getLock(String.valueOf(bookId));
 
         try {
-            if (!lock.tryLock(1, 3, TimeUnit.SECONDS)) {
+            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
                 log.info("락 획득 실패");
                 throw new IllegalArgumentException("락 획득 실패");
             }
