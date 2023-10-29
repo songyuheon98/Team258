@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MyReservationsViewController {
     @GetMapping("/myreservations")
     public String myReservationsView() {
-        return "/users/myreservations";
+        return "users/myreservations";
     }
 }

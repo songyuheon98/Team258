@@ -72,7 +72,7 @@
                 <ul class="pagination">
                     <!-- 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 -->
                     <li class="page-item" th:if="${(currentPage / 10 ) * 10 > 0}">
-                        <a class="page-link" th:href="@{/admin/donation/bookSetting/{donationId}/v2(page=${(currentPage / 10 - 1) * 10}, donationId=${donationId})}" aria-label="이전 페이지 그룹의 첫 페이지로 이동">
+                        <a class="page-link" th:href="@{/admin/donation/bookSetting/{donationId}/v3(page=${(currentPage / 10 - 1) * 10}, donationId=${donationId})}" aria-label="이전 페이지 그룹의 첫 페이지로 이동">
                             <span aria-hidden="true">«</span>
                         </a>
                     </li>
@@ -82,12 +82,12 @@
                         th:if="${pageNumber < totalPages}"
                         class="page-item"
                         th:class="${pageNumber == currentPage ? 'active' : ''}">
-                        <a class="page-link" th:href="@{/admin/donation/bookSetting/{donationId}/v2(page=${pageNumber}, donationId=${donationId})}" th:text="${pageNumber + 1}"></a>
+                        <a class="page-link" th:href="@{/admin/donation/bookSetting/{donationId}/v3(page=${pageNumber}, donationId=${donationId})}" th:text="${pageNumber + 1}"></a>
                     </li>
 
                     <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
                     <li class="page-item" th:if="${(currentPage / 10 + 1) * 10 < totalPages}">
-                        <a class="page-link" th:href="@{/admin/donation/bookSetting/{donationId}/v2(page=${(currentPage / 10 + 1) * 10}, donationId=${donationId})}" aria-label="다음 페이지 그룹의 첫 페이지로 이동">
+                        <a class="page-link" th:href="@{/admin/donation/bookSetting/{donationId}/v3(page=${(currentPage / 10 + 1) * 10}, donationId=${donationId})}" aria-label="다음 페이지 그룹의 첫 페이지로 이동">
                             <span aria-hidden="true">»</span>
                         </a>
                     </li>

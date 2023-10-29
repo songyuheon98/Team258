@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class BookApplyDonationService {
 
     @Transactional
     public MessageDto createBookApplyDonation(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
+
         /**
          * 나눔 책이 존재하지 않을때
          */
