@@ -3,20 +3,13 @@ package com.example.team258.common.controller.mixedController.admin;
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.dto.BookResponsePageDto;
 import com.example.team258.common.dto.DonationV3ServiceResultDto;
-import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.repository.BookRepository;
-import com.example.team258.domain.donation.dto.BookDonationEventPageResponseDto;
-import com.example.team258.domain.donation.dto.BookDonationEventPageResponseDtoV3;
-import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
-import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.example.team258.domain.donation.service.BookService;
-import com.example.team258.kafka.DonationEventV3KafkaDto;
 import com.example.team258.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/donation")
@@ -73,9 +63,6 @@ public class DonationMixedController {
                              Model model) {
 
         PageRequest eventPageRequest = PageRequest.of(eventPage, eventPageSize);  // page 파라미터로 받은 값을 사용
-        DonationEventV3KafkaDto donationEventV3KafkaDto = new DonationEventV3KafkaDto(bookPage, bookPageSize,eventPageRequest);
-
-//        producer.sendMessage("bookDonationEventApplyInput",donationEventV3KafkaDto);
         
         DonationV3ServiceResultDto donationV3ServiceResultDto = bookDonationEventService.donationV3Service(bookPage,  bookPageSize,eventPageRequest);
 

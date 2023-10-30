@@ -10,7 +10,9 @@ public class UserEventApplyKafkaDto {
     private String correlationId;
     private BookApplyDonationRequestDto bookApplyDonationRequestDto;
     private Long userId;
-    public UserEventApplyKafkaDto(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
+
+    public UserEventApplyKafkaDto(BookApplyDonationRequestDto bookApplyDonationRequestDto,Long userId) {
         this.bookApplyDonationRequestDto = bookApplyDonationRequestDto;
+        this.userId=userId;
     }
 }
