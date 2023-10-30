@@ -12,6 +12,4 @@ import org.springframework.stereotype.Repository;
 public interface BookCategoryRepository extends JpaRepository<BookCategory, Long>, QuerydslPredicateExecutor<BookCategory> {
 
     BookCategory findByBookCategoryName(String bookCategoryName);
-
-    Page<BookCategory> findAll(Specification<BookCategory> spec, Pageable pageable);
 }

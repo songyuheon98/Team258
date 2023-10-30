@@ -1,5 +1,6 @@
 package com.example.team258.domain.user.service;
 
+//import com.example.team258.common.redisson.DistributeLock;
 import com.example.team258.domain.user.dto.BookRentResponseDto;
 import com.example.team258.domain.user.entity.BookReservation;
 import com.example.team258.domain.user.repository.BookRentRepository;
@@ -14,11 +15,16 @@ import com.example.team258.common.repository.UserRepository;
 import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -28,6 +34,7 @@ public class BookRentService {
     private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+//    private final RedissonClient redissonClient;
 
     @Transactional(readOnly = true)
     public List<BookRentResponseDto> getRental(User user) {
@@ -35,21 +42,48 @@ public class BookRentService {
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         return savedUser.getBookRents().stream().map(BookRentResponseDto::new).toList();
     }
-    @Transactional
-    public MessageDto createRental(Long bookId, User user) {
-        Book book = bookRepository.findByIdLock(bookId)
-                .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
-        User savedUser = userRepository.findByIdFetchBookRent(user.getUserId())
-                .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
-        if (book.getBookStatus() != BookStatusEnum.POSSIBLE) {
-            throw new IllegalArgumentException("책이 대여 가능한 상태가 아닙니다.");
-        }
-        book.changeStatus(BookStatusEnum.IMPOSSIBLE);
-        BookRent bookRent = bookRentRepository.save(new BookRent(book));
-        book.addBookRent(bookRent);
-        savedUser.addBookRent(bookRent);
 
+    /**
+     * RedissonConfig를 활성화할 경우 현재 github action의 테스트코드 실행시 redis를 실행하지 못해 오류가 발생함
+     * 따라서 redisson 분산락을 사용하는 아래의 코드 일부와 commom-config-RedissonConfig 파일 전문을 주석처리한 상태임
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public MessageDto createRental(Long bookId, User user) {
+//        RLock lock = redissonClient.getLock(String.valueOf(bookId));
+//
+//        try {
+//            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
+//                log.info("락 획득 실패");
+//                throw new IllegalArgumentException("락 획득 실패");
+//            }
+//            log.info("락 획득 성공");
+
+            //로직
+            Book book = bookRepository.findById(bookId)
+                    .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
+            User savedUser = userRepository.findByIdFetchBookRent(user.getUserId())
+                    .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
+            if (book.getBookStatus() != BookStatusEnum.POSSIBLE) {
+                throw new IllegalArgumentException("책이 대여 가능한 상태가 아닙니다.");
+            }
+            book.changeStatus(BookStatusEnum.IMPOSSIBLE);
+            BookRent bookRent = bookRentRepository.save(new BookRent(book));
+            book.addBookRent(bookRent);
+            savedUser.addBookRent(bookRent);
+            //로직
+
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            e.printStackTrace();
+//        } finally {
+//            log.info("finally문 실행");
+//            if (lock != null && lock.isLocked() && lock.isHeldByCurrentThread()) {
+//                lock.unlock();
+//                log.info("언락 실행");
+//            }
+//        }
         return new MessageDto("도서 대출 신청이 완료되었습니다");
+
     }
 
     @Transactional
