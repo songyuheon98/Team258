@@ -51,6 +51,18 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
     @Query("select count(b) FROM book b")
     Long getMaxCount();
 
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select b from book b " +
+            "left join fetch b.bookApplyDonation  " +
+            "where b.bookId = :bookId")
+    Optional<Book> findByIdFetch(@Param("bookId") Long bookId);
+
+    @Query("select b from book b " +
+            "left join fetch b.bookRent  " +
+            "where b.bookId = :bookId")
+    Optional<Book> findByIdFetchBookRent(@Param("bookId") Long bookId);
+
 //
 //        @Query(value = "SELECT b FROM book b ",
 //                nativeQuery = false)
