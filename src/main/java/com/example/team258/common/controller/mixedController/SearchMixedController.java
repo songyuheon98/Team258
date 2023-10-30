@@ -66,25 +66,25 @@ public class SearchMixedController {
         return "search";
     }
 
-    @GetMapping("/search/v3")
-    public String mySearchView3(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
-                                @RequestParam(value = "keyword", required = false) String keyword,
-                                @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-                                Model model) {
-
-
-        long startTime = System.currentTimeMillis();//실행시간 측정
-        model.addAttribute("categories", adminCategoriesService.getAllCategories());
-        Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword3(bookCategoryName, keyword, page - 1);
-        model.addAttribute("books", bookResponseDtoPage.getContent());
-        model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-
-        long endTime = System.currentTimeMillis();
-        long durationTimeSec = endTime - startTime;
-        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
-
-        return "search";
-    }
+    //@GetMapping("/search/v3")
+    //public String mySearchView3(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+    //                            @RequestParam(value = "keyword", required = false) String keyword,
+    //                            @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+    //                            Model model) {
+    //
+    //
+    //    long startTime = System.currentTimeMillis();//실행시간 측정
+    //    model.addAttribute("categories", adminCategoriesService.getAllCategories());
+    //    Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword3(bookCategoryName, keyword, page - 1);
+    //    model.addAttribute("books", bookResponseDtoPage.getContent());
+    //    model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+    //
+    //    long endTime = System.currentTimeMillis();
+    //    long durationTimeSec = endTime - startTime;
+    //    System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+    //
+    //    return "search";
+    //}
 
 
     @GetMapping("/search/v4")
@@ -109,5 +109,30 @@ public class SearchMixedController {
 
         return "users/searchV2";
     }
+
+    // 더보기 기능 구현
+    @GetMapping("/search/lm1")
+    public String loadMoreResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+                                  Model model) {
+
+        long startTime = System.currentTimeMillis(); // 실행시간 측정
+
+        // 페이지 요청 시, 현재까지의 모든 페이지를 가져오도록 수정
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("books", bookResponseDtoLoadMore.getContent());
+        model.addAttribute("hasNext", bookResponseDtoLoadMore.hasNext());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "users/searchLM1";
+    }
+
 
 }

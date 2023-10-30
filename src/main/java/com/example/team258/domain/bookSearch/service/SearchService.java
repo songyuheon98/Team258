@@ -149,4 +149,35 @@ public class SearchService {
         System.out.println(bookList.hasNext());
         return bookList;
     }
+
+    //더보기용 서비스
+    public Slice<BookResponseDto> getMoreBooksByCategoryOrKeyword(String bookCategoryName, String keyword, int page) {
+        QBook qBook = QBook.book;
+        BooleanBuilder builder = new BooleanBuilder();
+        List<BookCategory> bookCategories = null;
+
+        if (bookCategoryName != null) {
+            BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
+            bookCategories = saveAllCategories(bookCategory);
+        }
+
+        if (keyword != null)
+            builder.and(qBook.bookName.contains(keyword));
+
+        if (bookCategories != null)
+            builder.and(qBook.bookCategory.in(bookCategories));
+
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "bookId");
+        Pageable pageable = PageRequest.of(page, 20, sort); // 여기에서 페이지 사이즈를 조절
+
+        // Slice로 변경
+        Slice<BookResponseDto> bookList = customBookRepository.findAllSliceBooks(builder, pageable).map(BookResponseDto::new);
+        System.out.println(bookList.hasNext());
+        //Page<BookResponseDto> bookList = bookRepository.findAll(builder, pageable).map(BookResponseDto::new);
+        //System.out.println("bookList->" + bookList);
+        //System.out.println("bookList.getTotalElements->" + bookList.getTotalElements());
+        //System.out.println("builder.toString() -> " + builder.toString());
+        return bookList;
+    }
 }
