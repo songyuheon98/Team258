@@ -25,6 +25,7 @@ public class AdminUsersController {
         return ResponseEntity.ok(adminUsersService.getAllUsers());
     }
 
+
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<MessageDto> deleteUser(@PathVariable Long userId,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {

@@ -104,6 +104,59 @@ public class BookApplyDonationService {
          */
         return new MessageDto("책 나눔 신청이 완료되었습니다.");
     }
+//    @Transactional
+//    public MessageDto createBookApplyDonationKafka(BookApplyDonationRequestDto bookApplyDonationRequestDto,Long userId) {
+//
+//        /**
+//         * 나눔 책이 존재하지 않을때
+//         */
+//        Book book = bookRepository.findById(bookApplyDonationRequestDto.getBookId())
+//                .orElseThrow(()->new IllegalArgumentException("나눔 신청한 책이 존재하지 않습니다."));
+//        /**
+//         * 나눔 신청한 책이 나눔 상태가 아닐때
+//         */
+//        /**
+//         * 누군가 먼저 신청했을때
+//         */
+//        if(book.getBookApplyDonation()!=null){
+//            return new MessageDto("이미 누군가 먼저 신청했습니다.");
+//        }
+//        /**
+//         * 나눔 이벤트 시간이 아닐때
+//         */
+//        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
+//                .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
+//
+//        if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
+//                LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
+//            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
+//        }
+//        /**
+//         * 신청자가 도서관 사용자가 아닐때
+//         */
+//        User user = userRepository.findById(userId).orElseThrow(
+//                ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
+//        );
+//        /**
+//         * 나눔 신청
+//         */
+//        BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
+//        bookApplyDonationRepository.save(bookApplyDonation);
+//        /**
+//         * book과 편의 메소드로 양방향 관계 설정
+//         */
+//        bookApplyDonation.addBook(book);
+//        /**
+//         * user, bookDonationEvent와 단방향 관계 설정
+//         */
+//        user.getBookApplyDonations().add(bookApplyDonation);
+//        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+//        book.changeStatus(BookStatusEnum.SOLD_OUT);
+//        /**
+//         * book의 상태 변경
+//         */
+//        return new MessageDto("책 나눔 신청이 완료되었습니다.");
+//    }
 
     //V2 : 낙관적락/비관적락
     @Transactional
