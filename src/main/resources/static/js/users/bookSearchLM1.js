@@ -18,17 +18,19 @@ $(document).ready(function() {
 
             success: function(data) {
                 console.log(data);
-                data.books.forEach(book => {
+
+                // books 배열에 접근하도록 수정
+                data[0].bookResponseDtos.forEach(book => {
                     let bookHtml =  `<tr>
-                                                    <td><input class="form-control" type="text" value="${book.bookName}" name="userId" readonly/></td>
-                                                    <td><input class="form-control" type="text" value="${book.bookAuthor}" name="username" readonly/></td>
-                                                    <td><input class="form-control" type="text" value="${book.bookPublish}" name="role" readonly/></td>
-                                                    <td><input class="form-control" type="text" value="${book.bookStatus}" name="role" readonly/></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success rent-button" data-book-id="${book.bookId}">대출하기</button>
-                                                        <button type="button" class="btn btn-primary reserve-button" data-book-id="${book.bookId}">예약하기</button>
-                                                    </td>
-                                                </tr>`;
+                                        <td><input class="form-control" type="text" value="${book.bookName}" name="userId" readonly/></td>
+                                        <td><input class="form-control" type="text" value="${book.bookAuthor}" name="username" readonly/></td>
+                                        <td><input class="form-control" type="text" value="${book.bookPublish}" name="role" readonly/></td>
+                                        <td><input class="form-control" type="text" value="${book.bookStatus}" name="role" readonly/></td>
+                                        <td>
+                                            <button type="button" class="btn btn-success rent-button" data-book-id="${book.bookId}">대출하기</button>
+                                            <button type="button" class="btn btn-primary reserve-button" data-book-id="${book.bookId}">예약하기</button>
+                                        </td>
+                                    </tr>`;
 
                     // 동적으로 생성된 HTML을 현재 테이블에 추가
                     $('#load-more-test').append(bookHtml);
@@ -39,7 +41,6 @@ $(document).ready(function() {
 
                 // 서버에서 받은 다음 페이지 값으로 업데이트
                 currentPage = currentPageThymeleaf;
-
             },
             error: function(xhr, status, error) {
                 // 오류 처리 로직
