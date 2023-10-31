@@ -61,16 +61,15 @@
       </td>
 
     </tr>
-
+    </tbody>
+    <tbody id="load-more-test">
+        <!--  더보기로 로드된 항목이 이곳에 추가됩니다. -->
     </tbody>
   </table>
   <!-- Add more rows here -->
   <!-- Pagination links -->
   <div id="paging">
     <button id="load-more-button" th:if="${hasNext}" onclick="goToNextPage()">더보기</button>
-  </div>
-  <div id="test">
-    <button id="test-button" onclick="testButton()">테스트버튼</button>
   </div>
   <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
 

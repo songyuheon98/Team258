@@ -6,10 +6,15 @@ import com.example.team258.domain.bookSearch.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -134,5 +139,26 @@ public class SearchMixedController {
         return "users/searchLM1";
     }
 
+    @GetMapping("/search/loadMore")
+    @ResponseBody
+    public ResponseEntity<?> loadMoreResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                             @RequestParam(value = "keyword", required = false) String keyword,
+                                             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page) {
+
+        long startTime = System.currentTimeMillis(); // 실행시간 측정
+
+        // 페이지 요청 시, 현재까지의 모든 페이지를 가져오도록 수정
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("books", bookResponseDtoLoadMore.getContent());
+        response.put("hasNext", bookResponseDtoLoadMore.hasNext());
+
+        return ResponseEntity.ok(response);
+    }
 
 }

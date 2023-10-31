@@ -154,30 +154,28 @@ public class SearchService {
     public Slice<BookResponseDto> getMoreBooksByCategoryOrKeyword(String bookCategoryName, String keyword, int page) {
         QBook qBook = QBook.book;
         BooleanBuilder builder = new BooleanBuilder();
-        List<BookCategory> bookCategories = null;
+        List<BookCategory> bookCategories = new ArrayList<>(); // 초기화
 
         if (bookCategoryName != null) {
             BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
-            bookCategories = saveAllCategories(bookCategory);
+            if (bookCategory != null) { // null 체크 추가
+                bookCategories = saveAllCategories(bookCategory);
+            }
         }
 
         if (keyword != null)
             builder.and(qBook.bookName.contains(keyword));
-
-        if (bookCategories != null)
+        if (!bookCategories.isEmpty()) // 리스트가 비어있는지 확인
             builder.and(qBook.bookCategory.in(bookCategories));
 
-
         Sort sort = Sort.by(Sort.Direction.ASC, "bookId");
-        Pageable pageable = PageRequest.of(page, 20, sort); // 여기에서 페이지 사이즈를 조절
+        Pageable pageable = PageRequest.of(page, 20, sort);
 
-        // Slice로 변경
+        // Slice로 추가 로드 데이터 가져오기
         Slice<BookResponseDto> bookList = customBookRepository.findAllSliceBooks(builder, pageable).map(BookResponseDto::new);
         System.out.println(bookList.hasNext());
-        //Page<BookResponseDto> bookList = bookRepository.findAll(builder, pageable).map(BookResponseDto::new);
-        //System.out.println("bookList->" + bookList);
-        //System.out.println("bookList.getTotalElements->" + bookList.getTotalElements());
-        //System.out.println("builder.toString() -> " + builder.toString());
+
         return bookList;
     }
+
 }
