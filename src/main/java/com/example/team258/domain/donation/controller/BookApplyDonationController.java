@@ -29,6 +29,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.example.team258.common.jwt.JwtUtil.logger;
+import static org.apache.kafka.common.requests.FetchMetadata.log;
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -52,6 +55,7 @@ public class BookApplyDonationController {
 
         String jsonString = objectMapper.writeValueAsString(userEventApplyKafkaDto);
 
+        System.out.println("jsonString = " + jsonString);
         CompletableFuture<MessageKafkaDto> future = new CompletableFuture<>();
 
         futures.put(correlationId, future);
@@ -63,7 +67,8 @@ public class BookApplyDonationController {
 
         return ResponseEntity.ok().body(messageKafkaDto.getMessageDto());
     }
-    @KafkaListener(topics = "user-event-apply-output-topic", groupId = "user-event-apply-output-consumer-group")
+    @KafkaListener(topics = "user-event-apply-output-topic", groupId = "user-event-apply-consumer-group",
+    containerFactory = "kafkaListenerContainerFactory2")
     public void AdminUserManagementConsumer(String message) throws JsonProcessingException {
 
         MessageKafkaDto messageKafkaDto = objectMapper.readValue(message, MessageKafkaDto.class);
