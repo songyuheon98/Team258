@@ -39,7 +39,7 @@ public class KafkaConfig {
         // 카프카 컨슈머의 설정값을 담을 Map을 생성합니다.
         Map<String, Object> config = new HashMap<>();
         // 카프카 서버의 주소를 설정합니다.
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "43.201.58.31:9092");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "15.164.247.40:9092");
         // 컨슈머 그룹의 ID를 설정합니다.
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "user-event-apply-consumer-group");
         // 메시지의 키와 값에 사용할 직렬화 클래스를 설정합니다.
@@ -83,7 +83,7 @@ public class KafkaConfig {
         // 카프카 프로듀서의 설정값을 담을 Map을 생성합니다.
         Map<String, Object> config = new HashMap<>();
         // 카프카 서버의 주소를 설정합니다.
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "43.201.58.31:9092");
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "15.164.247.40:9092");
         // 메시지의 키와 값에 사용할 직렬화 클래스를 설정합니다.
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
