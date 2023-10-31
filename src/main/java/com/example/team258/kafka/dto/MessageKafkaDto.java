@@ -13,4 +13,7 @@ public class MessageKafkaDto {
         this.messageDto = messageDto;
         this.correlationId = correlationId;
     }
+    public MessageDto getMessageDto() {
+        return messageDto;
+    }
 }

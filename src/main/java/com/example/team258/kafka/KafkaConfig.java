@@ -79,7 +79,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, String> producerFactory2() {
+    public ProducerFactory<String, String> producerFactory() {
         // 카프카 프로듀서의 설정값을 담을 Map을 생성합니다.
         Map<String, Object> config = new HashMap<>();
         // 카프카 서버의 주소를 설정합니다.
@@ -92,8 +92,8 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate1() {
-        return new KafkaTemplate<>(producerFactory2());
+    public KafkaTemplate<String, String> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 }
 
