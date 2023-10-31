@@ -115,7 +115,7 @@ public class SearchMixedController {
         return "users/searchV2";
     }
 
-    // 더보기 기능 구현
+    // 더보기 기능 구현 초기 페이지 진입
     @GetMapping("/search/lm1")
     public String loadMoreResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
                                   @RequestParam(value = "keyword", required = false) String keyword,
@@ -139,6 +139,7 @@ public class SearchMixedController {
         return "users/searchLM1";
     }
 
+    // 더보기 기능 구현 추가 페이지 로드
     @GetMapping("/search/loadMore")
     @ResponseBody
     public ResponseEntity<?> loadMoreResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
