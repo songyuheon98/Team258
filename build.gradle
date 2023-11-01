@@ -81,6 +81,7 @@ dependencies {
 	// 단위 테스트
 	implementation 'org.springframework:spring-test'
 
+
 	// Query Dsl
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
