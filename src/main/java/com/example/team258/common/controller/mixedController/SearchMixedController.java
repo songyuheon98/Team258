@@ -141,6 +141,30 @@ public class SearchMixedController {
         return "users/searchLM1";
     }
 
+    // 무한스크롤 기능 구현 초기 페이지 진입
+    @GetMapping("/search/is1")
+    public String infinityScrollResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+                                  Model model) {
+
+        long startTime = System.currentTimeMillis(); // 실행시간 측정
+
+        // 페이지 요청 시, 현재까지의 모든 페이지를 가져오도록 수정
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("books", bookResponseDtoLoadMore.getContent());
+        model.addAttribute("hasNext", bookResponseDtoLoadMore.hasNext());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "users/searchIS1";
+    }
+
     // 더보기 기능 구현 추가 페이지 로드
     @GetMapping("/search/loadMore")
     @ResponseBody
