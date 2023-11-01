@@ -32,7 +32,7 @@ public class BookCategory {
     private List<Book> books = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_category_id")
+    @JoinColumn(name = "parent_category_id", referencedColumnName = "book_category_id", insertable = false, updatable = false)
     private BookCategory parentCategory;
 
     @OneToMany(orphanRemoval = true, mappedBy = "parentCategory")
