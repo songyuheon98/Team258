@@ -64,7 +64,7 @@ public class BookApplyDonationController {
 
         MessageKafkaDto messageKafkaDto = future.get(); // 결과를 기다립니다.
 
-        System.out.println(messageKafkaDto);
+//        System.out.println(messageKafkaDto);
 
         return ResponseEntity.ok().body(messageKafkaDto.getMessageDto());
     }
