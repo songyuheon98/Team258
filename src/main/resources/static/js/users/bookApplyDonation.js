@@ -18,7 +18,7 @@ $(document).ready(function() {
             contentType: 'application/json;charset=UTF-8',
             dataType: 'json',
             success: function(response) {
-                alert('나눔 신청 성공!');
+                alert(response.msg);
                 location.reload(); // 페이지를 다시 로드하여 최신 정보를 표시합니다.
             },
             error: function(xhr, status, error) {
