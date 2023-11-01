@@ -73,25 +73,25 @@ public class SearchMixedController {
         return "search";
     }
 
-    //@GetMapping("/search/v3")
-    //public String mySearchView3(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
-    //                            @RequestParam(value = "keyword", required = false) String keyword,
-    //                            @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-    //                            Model model) {
-    //
-    //
-    //    long startTime = System.currentTimeMillis();//실행시간 측정
-    //    model.addAttribute("categories", adminCategoriesService.getAllCategories());
-    //    Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword3(bookCategoryName, keyword, page - 1);
-    //    model.addAttribute("books", bookResponseDtoPage.getContent());
-    //    model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-    //
-    //    long endTime = System.currentTimeMillis();
-    //    long durationTimeSec = endTime - startTime;
-    //    System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
-    //
-    //    return "search";
-    //}
+    @GetMapping("/search/v3")
+    public String mySearchView3(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                                Model model) {
+
+
+        long startTime = System.currentTimeMillis();//실행시간 측정
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword3(bookCategoryName, keyword, page - 1);
+        model.addAttribute("books", bookResponseDtoPage.getContent());
+        model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "search";
+    }
 
 
     @GetMapping("/search/v4")
