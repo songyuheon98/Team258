@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:insert="~{layout :: head}"></head>
+<head>
+  <!-- 나의 도서 대여 및 예약 관련 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/users/bookSearchIS1.js"></script>
+</head>
+<body>
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+
+<div class="index-contents">
+
+  <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div class="mb-3">
+    <label class="form-label" for="keyword">book's Keyword</label>
+    <input class="form-control" type="text" placeholder="Enter bookTitle" name="keyword" id="keyword"/>
+    <label class="form-label" for="bookCategoryId">Select Book's Category</label>
+    <select class="form-control" name="bookCategoryId" id="bookCategoryId">
+      <!-- 카테고리 옵션들 -->
+      <option value=''>전체 카테고리</option>
+      <option th:each="category : ${categories}" th:value="${category.bookCategoryName}"
+              th:text="${category.bookCategoryIsbnCode + ' - ' + category.bookCategoryName}"></option>
+    </select>
+  </div>
+  <div class="">
+    <button type="button" id="search-book-button" class="btn btn-outline-danger" onclick="search()">Search</button>
+  </div>
+  <!--  search-book-button 눌렀을 때 버튼 기능 구현해야됨 -->
+
+
+  <h2>Book Search</h2>
+
+
+  <h2>Search Results</h2>
+
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Book Name</th>
+      <th>Book Author</th>
+      <th>Published Year</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+      <td><input class="form-control" type="text" th:value="${book.bookName}" name="userId" readonly/></td>
+      <td><input class="form-control" type="text" th:value="${book.bookAuthor}" name="username" readonly/></td>
+      <td><input class="form-control" type="text" th:value="${book.bookPublish}" name="role" readonly/></td>
+      <td><input class="form-control" type="text" th:value="${book.bookStatus}" name="role" readonly/></td>
+      <td>
+        <!--                <button type="button" class="btn btn-success rent-button" data-book-id="${book.bookId}">대출하기</button>-->
+        <button type="button" class="btn btn-success rent-button" th:attr="data-book-id=${book.bookId}">대출하기</button>
+        <!--                <button type="button" class="btn btn-primary reserve-button" data-book-id="${book.bookId}">예약하기</button>-->
+        <button type="button" class="btn btn-primary reserve-button" th:attr="data-book-id=${book.bookId}">예약하기</button>
+      </td>
+
+    </tr>
+    </tbody>
+    <tbody id="load-more-test">
+    <!--  더보기로 로드된 항목이 이곳에 추가됩니다. -->
+    </tbody>
+  </table>
+  <!-- Add more rows here -->
+  <!-- Pagination links -->
+  <div id="paging">
+    <!--  무한스크롤 기능에서는 아래 버튼 제거  -->
+    <!--    <button id="load-more-button" th:if="${hasNext}" onclick="goToNextPage()">더보기</button>-->
+  </div>
+  <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
+
+</div>
+
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+
+<!-- 페이지 번호를 저장하는 input -->
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  let currentPageThymeleaf = [[${currentPage}]];
+  /*]]>*/
+</script>
+
+</body>
+</html>
