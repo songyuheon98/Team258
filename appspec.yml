@@ -34,8 +34,6 @@ hooks:
 
   # ApplicationStart 이벤트 시 실행될 스크립트를 지정한다.
   ApplicationStart:
-    - location: env.sh
-      runas: root
     - location: scripts/start.sh  # 스크립트의 경로를 지정한다.
       timeout: 60  # 허용되는 최대 실행 시간을 초로 지정한다.
       runas: ubuntu  # 스크립트 실행 사용자를 지정한다.

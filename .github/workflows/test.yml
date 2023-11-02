@@ -27,8 +27,8 @@ jobs:
 
     steps:
       # (0) 환경 변수 Group id를 위해 파일 생성
-      - name: Create env file
-        run: echo "GROUP_ID=${{ env.GROUP_ID }}" > env.sh
+#      - name: Create env file
+#        run: echo "GROUP_ID=${{ env.GROUP_ID }}" > env.sh
 
       # (1) 기본 체크아웃
       - name: Checkout
