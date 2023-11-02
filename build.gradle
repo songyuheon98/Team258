@@ -101,6 +101,9 @@ dependencies {
 	// json Trouble Shooting
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
 
+	// Elasticsearch
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
 }
 
 tasks.named('test') {
