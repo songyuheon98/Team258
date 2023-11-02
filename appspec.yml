@@ -26,6 +26,10 @@ permissions:
 
 # 배포 프로세스 도중 실행될 스크립트를 정의한다.
 hooks:
+  applicationStart:
+    - location: env.sh
+      runas: root
+
   # AfterInstall 이벤트 시 실행될 스크립트를 지정한다.
   AfterInstall:
     - location: scripts/stop.sh  # 스크립트의 경로를 지정한다.
