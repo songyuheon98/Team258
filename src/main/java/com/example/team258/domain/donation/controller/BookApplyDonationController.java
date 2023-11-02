@@ -68,7 +68,7 @@ public class BookApplyDonationController {
 
         return ResponseEntity.ok().body(messageKafkaDto.getMessageDto());
     }
-    @KafkaListener(topics = "user-event-apply-output-topic", groupId = "user-event-apply-consumer-group",
+    @KafkaListener(topics = "user-event-apply-output-topic", groupId = "user-event-apply-consumer-group2",
     containerFactory = "kafkaListenerContainerFactory2")
     public void AdminUserManagementConsumer(String message) throws JsonProcessingException {
 //        System.out.println("Received Message in group 'test-consumer-group2': " + message);
