@@ -22,8 +22,8 @@ jobs:
     env:
       CODE_DEPLOY_APPLICATION_NAME: team258-codedeploy-app
       CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: team258-codedeploy-deployment-group
-#      GROUP_ID: 1
-      SPRING_APPLICATION_JSON: '{"GROUP_ID":1}'
+      GROUP_ID: 1
+      SPRING_APPLICATION_JSON: '{"GROUP_ID":"1"}'
 
     steps:
       # (0) 환경 변수 Group id를 위해 파일 생성
