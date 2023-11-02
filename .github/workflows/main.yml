@@ -9,6 +9,8 @@ permissions:
 
 jobs:
   build:
+    env:
+      GROUP_ID: 1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
