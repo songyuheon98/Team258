@@ -11,10 +11,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.List;
 
 @Entity(name = "book")
+@Document(indexName = "books") // Elasticsearch 의 인덱스와 매핑하는 어노테이션
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
