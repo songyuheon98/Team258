@@ -1,8 +1,16 @@
 package com.example.team258.domain.bookSearch.repository;
 
-import com.example.team258.common.entity.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface BookElasticsearchRepository extends ElasticsearchRepository<Book, Long> {
-    // Elasticsearch와 관련된 추가적인 메서드가 필요하다면 여기에 추가하세요.
+import java.util.List;
+
+@NoRepositoryBean
+public interface BookElasticsearchRepository<T, ID> extends PagingAndSortingRepository<T, ID> {
+
+    Page<T> searchBooksByKeyword(String keyword, Pageable pageable);
 }
