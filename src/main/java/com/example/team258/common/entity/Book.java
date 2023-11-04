@@ -1,22 +1,21 @@
 package com.example.team258.common.entity;
 
+import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
 import com.example.team258.domain.donation.entity.BookApplyDonation;
 import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.user.entity.BookRent;
 import com.example.team258.domain.user.entity.BookReservation;
-import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.List;
 
 @Entity(name = "book")
-@Document(indexName = "books") // Elasticsearch 의 인덱스와 매핑하는 어노테이션
+@Document(indexName = "book") // Elasticsearch 의 인덱스와 매핑하는 어노테이션
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
