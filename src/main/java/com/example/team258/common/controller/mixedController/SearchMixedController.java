@@ -2,7 +2,6 @@ package com.example.team258.common.controller.mixedController;
 
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.dto.BookResponseLoadMoreDto;
-import com.example.team258.common.entity.ElasticsearchBook;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import com.example.team258.domain.bookSearch.service.SearchService;
 import lombok.RequiredArgsConstructor;
@@ -188,11 +187,11 @@ public class SearchMixedController {
         return ResponseEntity.ok(responseList);
     }
 
-    // Elasticsearch 검색 기본 API Controller
-    @GetMapping("/search/es1")
-    public List<ElasticsearchBook> searchBooks(@RequestParam String keyword) {
-        return searchService.searchBooksByKeyword(keyword);
-    }
+    //// Elasticsearch 검색 기본 API Controller
+    //@GetMapping("/search/es1")
+    //public List<ElasticsearchBook> searchBooks(@RequestParam String keyword) {
+    //    return searchService.searchBooksByKeyword(keyword);
+    //}
 
 
 }

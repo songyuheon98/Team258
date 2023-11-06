@@ -3,11 +3,9 @@ package com.example.team258.domain.bookSearch.service;
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookCategory;
-import com.example.team258.common.entity.ElasticsearchBook;
 import com.example.team258.common.entity.QBook;
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.CustomBookRepository;
-import com.example.team258.common.repository.ElasticBookRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,7 @@ public class SearchService {
     private final BookRepository bookRepository;
     private final BookCategoryRepository bookCategoryRepository;
     private final CustomBookRepository customBookRepository;
-    private final ElasticBookRepository elasticBookRepository;
+    //private final ElasticBookRepository elasticBookRepository;
 
     public Page<BookResponseDto> getAllBooks(int page) {
         Sort sort = Sort.by(Sort.Direction.ASC,"bookId");
@@ -180,9 +178,9 @@ public class SearchService {
         return bookList;
     }
 
-    // Elasticsearch 기본 키워드 검색 비지니스 로직
-    public List<ElasticsearchBook> searchBooksByKeyword(String keyword) {
-        return elasticBookRepository.findByBookNameContaining(keyword);
-    }
+    //// Elasticsearch 기본 키워드 검색 비지니스 로직
+    //public List<ElasticsearchBook> searchBooksByKeyword(String keyword) {
+    //    return elasticBookRepository.findByBookNameContaining(keyword);
+    //}
 
 }
