@@ -11,6 +11,7 @@ import com.querydsl.core.BooleanBuilder;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -50,6 +51,13 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
 
     @Query("select count(b) FROM book b")
     Long getMaxCount();
+
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode) AND b.bookCategory IN :bookCategories", nativeQuery = true)
+    Slice<Book> findAllByCategoriesAndBookNameContainingFTI(Pageable pageable, List<BookCategory> bookCategories, String tmp);
+
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode)", nativeQuery = true)
+    Slice<Book> findAllByBookNameContainingFTI(Pageable pageable, String tmp);
+
 
 //
 //        @Query(value = "SELECT b FROM book b ",

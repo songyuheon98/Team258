@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class SearchMixedController {
@@ -98,6 +100,28 @@ public class SearchMixedController {
 
 
         long startTime = System.currentTimeMillis();//실행시간 측정
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("books", bookResponseDtoSlice.getContent());
+        model.addAttribute("hasNext", bookResponseDtoSlice.hasNext());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "users/searchV2";
+    }
+
+    @GetMapping("/search/fti")
+    public String mySearchViewFTI(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                                Model model) {
+
+        long startTime = System.currentTimeMillis();//실행시간 측정
+        // Slice로 변경
+        Slice<BookResponseDto> bookResponseDtoSlice = searchService.getAllBooksByCategoryOrKeywordFTI(bookCategoryName,keyword,page-1);
+
         model.addAttribute("categories", adminCategoriesService.getAllCategories());
         model.addAttribute("currentPage", page);
         model.addAttribute("books", bookResponseDtoSlice.getContent());
