@@ -2,6 +2,7 @@ package com.example.team258.common.controller.mixedController;
 
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.dto.BookResponseLoadMoreDto;
+import com.example.team258.common.entity.ElasticsearchBook;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import com.example.team258.domain.bookSearch.service.SearchService;
 import lombok.RequiredArgsConstructor;
@@ -187,31 +188,11 @@ public class SearchMixedController {
         return ResponseEntity.ok(responseList);
     }
 
-    //// 엘라스틱서치 기능 구현 초기 페이지 진입
-    //@GetMapping("/search/es1")
-    //public String elasticSearchResults(
-    //        @RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
-    //        @RequestParam(value = "keyword", required = false) String keyword,
-    //        @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
-    //        Model model) {
-    //
-    //    long startTime = System.currentTimeMillis(); // 실행시간 측정
-    //
-    //    // 엘라스틱서치에서 결과 가져오기
-    //    BookElasticSearchResponseDto bookElasticSearchResponseDto = searchService.getElasticSearchResults(bookCategoryName, keyword, page);
-    //
-    //    // 엘라스틱서치 응답을 모델에 추가
-    //    model.addAttribute("categories", adminCategoriesService.getAllCategories());
-    //    model.addAttribute("currentPage", page);
-    //    model.addAttribute("books", bookElasticSearchResponseDto.getBooks());
-    //    model.addAttribute("hasNext", bookElasticSearchResponseDto.hasNext());
-    //
-    //    long endTime = System.currentTimeMillis();
-    //    long durationTimeSec = endTime - startTime;
-    //    System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
-    //
-    //    return "users/searchES1";
-    //}
+    // Elasticsearch 검색 기본 API Controller
+    @GetMapping("/search/es1")
+    public List<ElasticsearchBook> searchBooks(@RequestParam String keyword) {
+        return searchService.searchBooksByKeyword(keyword);
+    }
 
 
 }

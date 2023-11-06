@@ -8,13 +8,16 @@ import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfigurat
 @Configuration
 public class ElasticsearchConfig extends ElasticsearchConfiguration {
 
-    @Value("${spring.elastic.url}")
-    private String elasticUrl;
+    @Value("${spring.data.elasticsearch.cluster-nodes}")
+    private String clusterNodes;
+
+    @Value("${spring.data.elasticsearch.cluster-name}")
+    private String clusterName;
 
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-                .connectedTo(elasticUrl)
+                .connectedTo(clusterNodes)
                 .build();
     }
 }
