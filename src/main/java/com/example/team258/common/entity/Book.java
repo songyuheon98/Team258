@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Builder
-public class Book {
+public class Book extends Timestamped{
 //    @Version //낙관적락 적용
 //    private Long version;
 
