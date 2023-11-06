@@ -1,11 +1,8 @@
 package com.example.team258.domain.elasticsearch.controller;
 
-import com.example.team258.common.dto.BookResponseDto;
-import com.example.team258.domain.elasticsearch.application.ElasticBookResponse;
+import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
 import com.example.team258.domain.elasticsearch.service.ElasticBookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,12 +46,13 @@ public class ElasticBookSearchController {
 
     @GetMapping("search/elastic")
     @ResponseBody
-    public ResponseEntity<List<ElasticBookResponse>> search(
+    public ResponseEntity<List<ElasticBookResponseDto>> search(
             @RequestParam("keyword") String book_name,
-            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page) {
-        List<ElasticBookResponse> elasticBookResponses = elasticBookService.searchByBookName(book_name, page)
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
+        List<ElasticBookResponseDto> elasticBookResponses = elasticBookService.searchByBookName(book_name, page)
                 .stream()
-                .map(ElasticBookResponse::from)
+                .map(ElasticBookResponseDto::from)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(elasticBookResponses);
     }

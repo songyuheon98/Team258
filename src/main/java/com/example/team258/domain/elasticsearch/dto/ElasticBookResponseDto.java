@@ -1,36 +1,44 @@
 package com.example.team258.domain.elasticsearch.dto;
 
-import com.example.team258.domain.elasticsearch.application.ElasticBookResponse;
 import com.example.team258.domain.elasticsearch.entity.ElasticsearchBook;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class ElasticBookResponseDto {
 
-    private Long id;
+    private Long bookId;
     private String bookName;
     private String bookAuthor;
+    private String bookPublish;
+    private String bookStatus;
 
-    private ElasticBookResponseDto() {
-    }
-
-    public ElasticBookResponseDto(Long id, String bookName, String bookAuthor) {
-        this.id = id;
+    public ElasticBookResponseDto(Long id, String bookName, String bookAuthor, String bookPublish, String bookStatus) {
+        this.bookId = id;
         this.bookName = bookName;
         this.bookAuthor = bookAuthor;
+        this.bookPublish = bookPublish;
+        this.bookStatus = bookStatus;
     }
 
     public static ElasticBookResponseDto from(ElasticsearchBook elasticsearchBook) {
-        return new ElasticBookResponseDto(elasticsearchBook.getId(),elasticsearchBook.getBookName(),elasticsearchBook.getBookAuthor());
+        return new ElasticBookResponseDto(
+                elasticsearchBook.getId(),
+                elasticsearchBook.getBookName(),
+                elasticsearchBook.getBookAuthor(),
+                elasticsearchBook.getBookPublish(),
+                elasticsearchBook.getBookStatus()
+        );
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public String getBookAuthor() {
-        return bookAuthor;
+    public static ElasticBookResponseDto from(ElasticBookResponseDto elasticBookResponseDto) {
+        return new ElasticBookResponseDto(
+                elasticBookResponseDto.getBookId(),
+                elasticBookResponseDto.getBookName(),
+                elasticBookResponseDto.getBookAuthor(),
+                elasticBookResponseDto.getBookPublish(),
+                elasticBookResponseDto.getBookStatus()
+        );
     }
 }

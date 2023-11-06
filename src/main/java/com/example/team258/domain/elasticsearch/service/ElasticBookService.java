@@ -25,10 +25,10 @@ public class ElasticBookService {
 
     public List<ElasticBookResponseDto> searchByBookName(String keyword, int page) {
 
-        //Sort sort = Sort.by(Sort.Direction.ASC, "book_Id");
-        //Pageable pageable = PageRequest.of(page, 10, sort);
+        Sort sort = Sort.by(Sort.Direction.ASC, "_id");
+        Pageable pageable = PageRequest.of(page, 10, sort);
 
-        return elasticBookSearchRepository.findByBookNameContains(keyword, page)
+        return elasticBookSearchRepository.findByBookNameContains(keyword, pageable)
             .stream()
             .map(ElasticBookResponseDto::from)
             .collect(Collectors.toList());
