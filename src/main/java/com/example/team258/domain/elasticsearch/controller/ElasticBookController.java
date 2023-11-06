@@ -1,7 +1,6 @@
 package com.example.team258.domain.elasticsearch.controller;
 
 import com.example.team258.domain.elasticsearch.application.ElasticBookResponse;
-import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
 import com.example.team258.domain.elasticsearch.service.ElasticBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping
 @RestController
-public class BookController {
+public class ElasticBookController {
 
     private final ElasticBookService elasticBookService;
 

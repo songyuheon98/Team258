@@ -2,7 +2,7 @@ package com.example.team258.domain.elasticsearch.service;
 
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
-import com.example.team258.domain.elasticsearch.repository.BookSearchRepository;
+import com.example.team258.domain.elasticsearch.repository.ElasticBookSearchRepositoryElastic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ElasticBookService {
 
     private final BookRepository bookRepository;
-    private final BookSearchRepository bookSearchRepository;
+    private final ElasticBookSearchRepositoryElastic elasticBookSearchRepository;
 
     //@Transactional
     //public Long save(ElasticBookRequestDto elasticBookRequestDto) {
@@ -31,7 +31,7 @@ public class ElasticBookService {
 
     public List<ElasticBookResponseDto> searchByBookName(String bookName, Pageable pageable) {
         // userSearchRepository.findByBasicProfile_NameContains(name) 가능
-        return bookSearchRepository.findByBookNameContains(bookName, pageable)
+        return elasticBookSearchRepository.findByBookNameContains(bookName, pageable)
             .stream()
             .map(ElasticBookResponseDto::from)
             .collect(Collectors.toList());

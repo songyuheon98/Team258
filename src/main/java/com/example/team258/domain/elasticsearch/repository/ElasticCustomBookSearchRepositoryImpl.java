@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class CustomBookSearchRepositoryImpl implements CustomBookSearchRepository {
+public class ElasticCustomBookSearchRepositoryImpl implements ElasticCustomBookSearchRepository {
 
     private final ElasticsearchOperations elasticsearchOperations;
 

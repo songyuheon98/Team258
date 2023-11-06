@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import java.util.List;
 
-public interface BookSearchRepository extends ElasticsearchRepository<ElasticsearchBook, Long>, CustomBookSearchRepository {
+public interface ElasticBookSearchRepositoryElastic extends ElasticsearchRepository<ElasticsearchBook, Long>, ElasticCustomBookSearchRepository {
     List<ElasticsearchBook> findByBookNameContains(String book_name);
 }
 
