@@ -176,14 +176,15 @@ public class SearchMixedController {
 
         Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
 
-        long endTime = System.currentTimeMillis();
-        long durationTimeSec = endTime - startTime;
-        System.out.println(durationTimeSec + "m/s");
-
         List<BookResponseLoadMoreDto> responseList = Collections.singletonList(
                 new BookResponseLoadMoreDto(bookResponseDtoLoadMore.getContent())
         );
 
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s");
+
         return ResponseEntity.ok(responseList);
     }
+
 }

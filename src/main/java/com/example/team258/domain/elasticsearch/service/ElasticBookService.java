@@ -5,7 +5,9 @@ import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
 import com.example.team258.domain.elasticsearch.repository.ElasticBookSearchRepositoryElastic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +23,12 @@ public class ElasticBookService {
     private final BookRepository bookRepository;
     private final ElasticBookSearchRepositoryElastic elasticBookSearchRepository;
 
-    //@Transactional
-    //public Long save(ElasticBookRequestDto elasticBookRequestDto) {
-    //    ElasticsearchBook elasticsearchBook = new ElasticsearchBook(elasticBookRequestDto.getBookName(), elasticBookRequestDto.getAuthor());
-    //    ElasticsearchBook savedBook = userRepository.save(elasticsearchBook);
-    //    userSearchRepository.save(elasticsearchBook);
-    //    return savedUser.getId();
-    //}
+    public List<ElasticBookResponseDto> searchByBookName(String keyword, int page) {
 
-    public List<ElasticBookResponseDto> searchByBookName(String bookName, Pageable pageable) {
-        // userSearchRepository.findByBasicProfile_NameContains(name) 가능
-        return elasticBookSearchRepository.findByBookNameContains(bookName, pageable)
+        //Sort sort = Sort.by(Sort.Direction.ASC, "book_Id");
+        //Pageable pageable = PageRequest.of(page, 10, sort);
+
+        return elasticBookSearchRepository.findByBookNameContains(keyword, page)
             .stream()
             .map(ElasticBookResponseDto::from)
             .collect(Collectors.toList());

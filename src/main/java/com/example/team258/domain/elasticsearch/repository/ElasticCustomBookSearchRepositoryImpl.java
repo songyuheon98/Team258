@@ -21,9 +21,9 @@ public class ElasticCustomBookSearchRepositoryImpl implements ElasticCustomBookS
     private final ElasticsearchOperations elasticsearchOperations;
 
     @Override
-    public List<ElasticsearchBook> findByBookNameContains(String bookName, Pageable pageable){
-        Criteria criteria = Criteria.where("bookName").contains(bookName);
-        Query query = new CriteriaQuery(criteria).setPageable(pageable);
+    public List<ElasticsearchBook> findByBookNameContains(String keyword, int page){
+        Criteria criteria = Criteria.where("bookName").contains(keyword);
+        Query query = new CriteriaQuery(criteria).setPageable(Pageable.ofSize(10).withPage(page));
         SearchHits<ElasticsearchBook> search = elasticsearchOperations.search(query, ElasticsearchBook.class);
         return search.stream()
                 .map(SearchHit::getContent)
