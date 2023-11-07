@@ -1,10 +1,8 @@
 package com.example.team258.domain.elasticsearch.controller;
 
-import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
 import com.example.team258.domain.elasticsearch.service.ElasticBookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +21,7 @@ public class ElasticBookSearchController {
 
     private final ElasticBookService elasticBookService;
 
-    // 무한스크롤 기능 구현 초기 페이지 진입
+    // Elasticsearch + 무한스크롤 기능 구현 초기 페이지 진입
     @GetMapping("/search/el1")
     public String elasticSearchResults(
             @RequestParam(value = "keyword", required = false) String keyword,
@@ -47,7 +45,7 @@ public class ElasticBookSearchController {
         return "users/searchEL1";
     }
 
-
+    // Elasticsearch 무한 스크롤 데이터 요청 API
     @GetMapping("search/elastic")
     @ResponseBody
     public ResponseEntity<List<ElasticBookResponseDto>> search(

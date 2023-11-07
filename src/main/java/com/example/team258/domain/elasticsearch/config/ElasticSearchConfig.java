@@ -1,6 +1,6 @@
 package com.example.team258.domain.elasticsearch.config;
 
-import com.example.team258.domain.elasticsearch.repository.ElasticBookSearchRepositoryElastic;
+import com.example.team258.domain.elasticsearch.repository.ElasticBookSearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 
-@EnableElasticsearchRepositories(basePackageClasses = {ElasticBookSearchRepositoryElastic.class})
+@EnableElasticsearchRepositories(basePackageClasses = {ElasticBookSearchRepository.class})
 @Configuration
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     @Bean
