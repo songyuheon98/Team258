@@ -158,8 +158,7 @@ public class SearchService {
             bookCategories = saveAllCategories(bookCategory);
         }
         Slice<BookResponseDto> bookList = new SliceImpl<>(new ArrayList<>());
-        Sort sort = Sort.by(Sort.Direction.ASC, "book_id");
-        Pageable pageable = PageRequest.of(page, 20, sort);
+        Pageable pageable = PageRequest.of(page, 20);
         if (keyword != null){
             String[] keywords = keyword.split(" ");
             String tmp = "+"+keywords[0];
@@ -175,9 +174,9 @@ public class SearchService {
             }
         } else if (keyword == null){
             if(bookCategories != null){
-                bookList = bookRepository.findAllByCategories(bookCategories,pageable).map(BookResponseDto::new);
+                bookList = bookRepository.findAllByCategoriesAsSlice(bookCategories,pageable).map(BookResponseDto::new);
             } else {
-                bookList = bookRepository.findAll(pageable).map(BookResponseDto::new);
+                bookList = bookRepository.findAllAsSlice(pageable).map(BookResponseDto::new);
             }
         }
         // Slice로 변경

@@ -131,7 +131,7 @@ public class SearchMixedController {
         long durationTimeSec = endTime - startTime;
         System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
 
-        return "users/searchV2";
+        return "users/searchFTI";
     }
 
 }
