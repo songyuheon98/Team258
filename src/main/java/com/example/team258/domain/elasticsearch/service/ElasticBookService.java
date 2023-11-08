@@ -25,13 +25,17 @@ public class ElasticBookService {
     private final ElasticBookSearchRepository elasticBookSearchRepository;
 
     public List<ElasticBookResponseDto> searchByBookName(String keyword, int page, int size) {
-        if (keyword == null) {
-            // 검색 키워드가 null인 경우에 대한 처리
-            return Collections.emptyList();
-        }
-        Sort sort = Sort.by(Sort.Direction.ASC, "_id");
+        Sort sort = Sort.by(Sort.Direction.ASC, "book_id");
         //Sort sort = Sort.by(Sort.Direction.ASC, "book_name");
         Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (keyword == null) {
+            // 검색 키워드가 null인 경우에는 전체 도서를 가져옴
+            return elasticBookSearchRepository.findAll(pageable)
+                    .stream()
+                    .map(ElasticBookResponseDto::from)
+                    .collect(Collectors.toList());
+        }
 
         return elasticBookSearchRepository.findByBookNameContains(keyword, pageable)
             .stream()

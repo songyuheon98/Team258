@@ -23,7 +23,8 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     @Override
     public RestHighLevelClient elasticsearchClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("localhost:9200")
+                //.connectedTo("localhost:9200")
+                .connectedTo("54.180.161.110:9200") // EC2 인스턴스의 퍼블릭 IPv4 주소로 변경
                 .build();
         return RestClients.create(clientConfiguration).rest();
         // org.springframework.data.elasticsearch.client

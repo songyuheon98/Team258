@@ -69,5 +69,10 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
 //                nativeQuery = false)
 //        Slice<Book> findAllSliceBooks(BooleanBuilder builder,Pageable pageable);
 
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode) AND b.bookCategory IN :bookCategories", nativeQuery = true)
+    Slice<Book> findAllByCategoriesAndBookNameContainingFTI(Pageable pageable, List<BookCategory> bookCategories, String tmp);
+
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode)", nativeQuery = true)
+    Slice<Book> findAllByBookNameContainingFTI(Pageable pageable, String tmp);
 
 }

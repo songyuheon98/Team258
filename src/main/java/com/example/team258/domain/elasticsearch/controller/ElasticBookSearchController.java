@@ -31,7 +31,7 @@ public class ElasticBookSearchController {
 
         long startTime = System.currentTimeMillis(); // 실행시간 측정
 
-        // 페이지 요청 시, 현재까지의 모든 페이지를 가져오도록 수정
+        // 페이지 요청 시, 미검색 기본 페이지를 가져오도록
         List<ElasticBookResponseDto> elasticBookResponseDtos = elasticBookService.searchByBookName(keyword, page, size);
 
         model.addAttribute("currentPage", page);
@@ -49,13 +49,18 @@ public class ElasticBookSearchController {
     @GetMapping("search/elastic")
     @ResponseBody
     public ResponseEntity<List<ElasticBookResponseDto>> search(
-            @RequestParam("keyword") String book_name,
+            @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "20", required = false) Integer size) {
-        List<ElasticBookResponseDto> elasticBookResponses = elasticBookService.searchByBookName(book_name, page, size)
+        long startTime = System.currentTimeMillis(); // 실행시간 측정
+
+        List<ElasticBookResponseDto> elasticBookResponses = elasticBookService.searchByBookName(keyword, page, size)
                 .stream()
                 .map(ElasticBookResponseDto::from)
                 .collect(Collectors.toList());
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
         return ResponseEntity.ok(elasticBookResponses);
     }
 }
