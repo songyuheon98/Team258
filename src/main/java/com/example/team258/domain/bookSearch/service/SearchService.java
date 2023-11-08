@@ -162,17 +162,10 @@ public class SearchService {
         Slice<BookResponseDto> bookList = new SliceImpl<>(new ArrayList<>());
         Pageable pageable = PageRequest.of(page, 20);
         if (keyword != null){
-            String[] keywords = keyword.split(" ");
-            String tmp = "+"+keywords[0];
-            if(keywords.length>1){
-                for(int i = 1;i<keywords.length;i++){
-                    tmp=tmp+" +"+ keywords[i];
-                }
-            }
             if(bookCategories != null){
-                bookList = bookRepository.findAllByCategoriesAndBookNameContainingFTI(pageable,bookCategoryIds,tmp).map(BookResponseDto::new);
+                bookList = bookRepository.findAllByCategoriesAndBookNameContainingFTI(pageable,bookCategoryIds,keyword).map(BookResponseDto::new);
             } else{
-                bookList = bookRepository.findAllByBookNameContainingFTI(pageable,tmp).map(BookResponseDto::new);
+                bookList = bookRepository.findAllByBookNameContainingFTI(pageable,keyword).map(BookResponseDto::new);
             }
         } else if (keyword == null){
             if(bookCategories != null){
