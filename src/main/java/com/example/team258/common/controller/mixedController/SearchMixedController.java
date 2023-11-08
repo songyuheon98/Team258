@@ -1,16 +1,20 @@
 package com.example.team258.common.controller.mixedController;
 
 import com.example.team258.common.dto.BookResponseDto;
+import com.example.team258.common.dto.BookResponseLoadMoreDto;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import com.example.team258.domain.bookSearch.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -133,5 +137,28 @@ public class SearchMixedController {
 
         return "users/searchFTI";
     }
+
+    @GetMapping("/search/loadMorefti")
+    @ResponseBody
+    public ResponseEntity<List<BookResponseLoadMoreDto>> loadMoreResults(
+            @RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page) {
+
+        long startTime = System.currentTimeMillis();
+
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getAllBooksByCategoryOrKeywordFTI(bookCategoryName, keyword, page);
+
+        List<BookResponseLoadMoreDto> responseList = Collections.singletonList(
+                new BookResponseLoadMoreDto(bookResponseDtoLoadMore.getContent())
+        );
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s");
+
+        return ResponseEntity.ok(responseList);
+    }
+
 
 }

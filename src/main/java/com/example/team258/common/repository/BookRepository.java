@@ -52,8 +52,9 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
     @Query("select count(b) FROM book b")
     Long getMaxCount();
 
-    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode) AND b.bookCategory IN :bookCategories", nativeQuery = true)
-    Slice<Book> findAllByCategoriesAndBookNameContainingFTI(Pageable pageable, List<BookCategory> bookCategories, String tmp);
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode) AND b.book_category_id IN :bookCategories", nativeQuery = true)
+    Slice<Book> findAllByCategoriesAndBookNameContainingFTI(Pageable pageable, @Param("bookCategories") List<Long> bookCategories, @Param("tmp") String tmp);
+
 
     @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode)", nativeQuery = true)
     Slice<Book> findAllByBookNameContainingFTI(Pageable pageable, String tmp);

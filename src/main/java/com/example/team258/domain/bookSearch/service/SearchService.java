@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -157,6 +158,7 @@ public class SearchService {
             BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
             bookCategories = saveAllCategories(bookCategory);
         }
+        List<Long> bookCategoryIds=bookCategories.stream().map(i->i.getBookCategoryId()).collect(Collectors.toList());
         Slice<BookResponseDto> bookList = new SliceImpl<>(new ArrayList<>());
         Pageable pageable = PageRequest.of(page, 20);
         if (keyword != null){
@@ -168,7 +170,7 @@ public class SearchService {
                 }
             }
             if(bookCategories != null){
-                bookList = bookRepository.findAllByCategoriesAndBookNameContainingFTI(pageable,bookCategories,tmp).map(BookResponseDto::new);
+                bookList = bookRepository.findAllByCategoriesAndBookNameContainingFTI(pageable,bookCategoryIds,tmp).map(BookResponseDto::new);
             } else{
                 bookList = bookRepository.findAllByBookNameContainingFTI(pageable,tmp).map(BookResponseDto::new);
             }
