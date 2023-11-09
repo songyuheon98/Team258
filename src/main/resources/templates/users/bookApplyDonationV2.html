@@ -23,12 +23,24 @@
     <div class="container-container1">
       <input type="hidden" id="donationId" th:value="${bookDonationEvent.donationId}" />
       <!-- 중앙 강조 이벤트 시간 표시 -->
-      <div class="text-center my-4">
-        <h1 style="font-size: 2.5em; color: #007BFF;">이벤트 시작 시간:</h1>
-        <h2 style="font-size: 2em; color: #000;"><span th:text="${bookDonationEvent.createdAt}"></span></h2>
+      <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2.5em; color: #007BFF; margin-bottom: 0.5em;">
+          <i class="bi bi-play-circle-fill" style="margin-right: 10px;"></i>
+          이벤트 시작 시간
+        </h1>
+        <h2 style="font-size: 2em; color: #212529;">
+          <span th:text="${#temporals.format(bookDonationEvent.createdAt, 'yyyy년 MM월 dd일 HH시 mm분')}" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;"></span>
+        </h2>
+      </div>
 
-        <h1 style="font-size: 2.5em; color: #DC3545;">이벤트 종료 시간:</h1>
-        <h2 style="font-size: 2em; color: #000;"><span th:text="${bookDonationEvent.closedAt}"></span></h2>
+      <div>
+        <h1 style="font-size: 2.5em; color: #DC3545; margin-bottom: 0.5em;">
+          <i class="bi bi-stop-circle-fill" style="margin-right: 10px;"></i>
+          이벤트 종료 시간
+        </h1>
+        <h2 style="font-size: 2em; color: #212529;">
+          <span th:text="${#temporals.format(bookDonationEvent.closedAt, 'yyyy년 MM월 dd일 HH시 mm분')}" style="background-color: #e9ecef; padding: 10px; border-radius: 5px;"></span>
+        </h2>
       </div>
       <hr> <!-- 구분선 -->
 
