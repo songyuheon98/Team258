@@ -55,7 +55,6 @@ public class BookApplyDonationController {
 
         String jsonString = objectMapper.writeValueAsString(userEventApplyKafkaDto);
 
-//        System.out.println("jsonString = " + jsonString);
         CompletableFuture<MessageKafkaDto> future = new CompletableFuture<>();
 
         futures.put(correlationId, future);
@@ -64,14 +63,13 @@ public class BookApplyDonationController {
 
         MessageKafkaDto messageKafkaDto = future.get(); // 결과를 기다립니다.
 
-//        System.out.println(messageKafkaDto);
 
         return ResponseEntity.ok().body(messageKafkaDto.getMessageDto());
     }
     @KafkaListener(topics = "user-event-apply-output-topic", groupId = "user-event-apply-consumer-group${GROUP_ID}",
     containerFactory = "kafkaListenerContainerFactory2")
     public void AdminUserManagementConsumer(String message) throws JsonProcessingException {
-//        System.out.println("Received Message in group 'test-consumer-group2': " + message);
+
         MessageKafkaDto messageKafkaDto = objectMapper.readValue(message, MessageKafkaDto.class);
 
         CompletableFuture<MessageKafkaDto> future = futures.get(messageKafkaDto.getCorrelationId());
@@ -80,8 +78,6 @@ public class BookApplyDonationController {
             future.complete(messageKafkaDto);
         }
     }
-
-
 
     //낙관적락,비관적락 사용시
     @PostMapping("/bookApplyDonation/v2")
@@ -100,7 +96,6 @@ public class BookApplyDonationController {
     public ResponseEntity<MessageDto> createBookApplyDonationV4(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
         return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonationV4(bookApplyDonationRequestDto));
     }
-
 
     @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
@@ -122,6 +117,5 @@ public class BookApplyDonationController {
     public ResponseEntity<List<BookApplyDonationResponseDto>> getBookApplyDonations(){
         return ResponseEntity.ok().body(bookApplyDonationService.getBookApplyDonations());
     }
-
 }
 

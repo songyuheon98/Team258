@@ -41,25 +41,6 @@ public class BookDonationEventMixedController {
     }
 
     /**
-     * 이벤트만 가져오는 컨트럴러
-     * @param page
-     * @param model
-     * @return
-     */
-//    @GetMapping("/v2")
-//    public String bookDonationEventOnlyV2(@RequestParam(defaultValue = "0") int page,Model model ) {
-//        PageRequest pageRequest = PageRequest.of(page, 8);  // page 파라미터로 받은 값을 사용
-//
-//        BookDonationEventOnlyPageResponseDto bookDonationEventOnlyPageResponseDto = bookDonationEventService.getDonationEventOnlyV2(pageRequest);
-//
-//        model.addAttribute("currentPage",page);
-//        model.addAttribute("totalPages", bookDonationEventOnlyPageResponseDto.getTotalpages());
-//        model.addAttribute("events", bookDonationEventOnlyPageResponseDto.getBookDonationEventOnlyResponseDtos());
-//
-//        return "/users/bookDonationEventV2";
-//    }
-
-    /**
      * 유저 - 참여 가능한 이벤트 리스트를 보여주는 컨트롤러
      * @param page : 현재 페이지
      * @param eventId : 이벤트 아이디
@@ -86,24 +67,6 @@ public class BookDonationEventMixedController {
         return "users/bookDonationEventV2";
     }
 
-//
-//    @GetMapping("{donationId}")
-//    public String bookApplyDonationEventPage(Model model, @PathVariable Long donationId) {
-//        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
-//                () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
-//        );
-//        List<Book> books = bookDonationEvent.getBooks().stream().filter(book -> book.getBookStatus().equals(BookStatusEnum.DONATION)).toList();
-//
-//        List<BookResponseDto> bookResponseDtos = books.stream()
-//                .map(BookResponseDto::new)
-//                .toList();
-//        BookDonationEventResponseDto bookDonationEventResponseDto = new BookDonationEventResponseDto(bookDonationEvent);
-//
-//        model.addAttribute("bookDonationEvent", bookDonationEventResponseDto);
-//        model.addAttribute("books", bookResponseDtos);
-//
-//        return "/users/bookApplyDonation";
-//    }
 
     /**
      * 유저 - 이벤트가 진행되는 페이지를 보여주는 컨트롤러
