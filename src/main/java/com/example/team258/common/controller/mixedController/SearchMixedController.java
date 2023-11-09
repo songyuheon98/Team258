@@ -217,7 +217,7 @@ public class SearchMixedController {
 
     @GetMapping("/search/loadMorefti")
     @ResponseBody
-    public ResponseEntity<List<BookResponseLoadMoreDto>> loadMoreResults(
+    public ResponseEntity<List<BookResponseLoadMoreDto>> loadMoreResultsFTI(
             @RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page) {
