@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,5 +69,10 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
 //                nativeQuery = false)
 //        Slice<Book> findAllSliceBooks(BooleanBuilder builder,Pageable pageable);
 
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode) AND b.bookCategory IN :bookCategories", nativeQuery = true)
+    Slice<Book> findAllByCategoriesAndBookNameContainingFTI(Pageable pageable, List<BookCategory> bookCategories, String tmp);
+
+    @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode)", nativeQuery = true)
+    Slice<Book> findAllByBookNameContainingFTI(Pageable pageable, String tmp);
 
 }

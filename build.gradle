@@ -102,6 +102,14 @@ dependencies {
 	// json Trouble Shooting
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
 
+	// Elasticsearch
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.2.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+//	implementation 'org.springframework.data:spring-data-elasticsearch:5.1.3'
+//	implementation 'co.elastic.clients:elasticsearch-java:8.7.1'
+//	implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:8.1' // 사용하는 Elasticsearch 버전에 맞게 버전을 지정해야 함
+
 }
 
 tasks.named('test') {

@@ -4,9 +4,9 @@ import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookCategory;
 import com.example.team258.common.entity.QBook;
+import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.CustomBookRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
-import com.example.team258.common.repository.BookRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -22,7 +22,7 @@ public class SearchService {
     private final BookRepository bookRepository;
     private final BookCategoryRepository bookCategoryRepository;
     private final CustomBookRepository customBookRepository;
-
+    //private final ElasticBookRepository elasticBookRepository;
 
     public Page<BookResponseDto> getAllBooks(int page) {
         Sort sort = Sort.by(Sort.Direction.ASC,"bookId");
@@ -178,4 +178,41 @@ public class SearchService {
         return bookList;
     }
 
+    //// Elasticsearch 기본 키워드 검색 비지니스 로직
+    //public List<ElasticsearchBook> searchBooksByKeyword(String keyword) {
+    //    return elasticBookRepository.findByBookNameContaining(keyword);
+    //}
+    public Slice<BookResponseDto> getAllBooksByCategoryOrKeywordFTI(String bookCategoryName, String keyword, int page) {
+
+        List<BookCategory> bookCategories = null;
+        if (bookCategoryName != null) {
+            BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
+            bookCategories = saveAllCategories(bookCategory);
+        }
+        Slice<BookResponseDto> bookList = new SliceImpl<>(new ArrayList<>());
+        Sort sort = Sort.by(Sort.Direction.ASC, "book_id");
+        Pageable pageable = PageRequest.of(page, 20, sort);
+        if (keyword != null){
+            String[] keywords = keyword.split(" ");
+            String tmp = "+"+keywords[0];
+            if(keywords.length>1){
+                for(int i = 1;i<keywords.length;i++){
+                    tmp=tmp+" +"+ keywords[i];
+                }
+            }
+            if(bookCategories != null){
+                bookList = bookRepository.findAllByCategoriesAndBookNameContainingFTI(pageable,bookCategories,tmp).map(BookResponseDto::new);
+            } else{
+                bookList = bookRepository.findAllByBookNameContainingFTI(pageable,tmp).map(BookResponseDto::new);
+            }
+        } else if (keyword == null){
+            if(bookCategories != null){
+                bookList = bookRepository.findAllByCategories(bookCategories,pageable).map(BookResponseDto::new);
+            } else {
+                bookList = bookRepository.findAll(pageable).map(BookResponseDto::new);
+            }
+        }
+        // Slice로 변경
+        return bookList;
+    }
 }
