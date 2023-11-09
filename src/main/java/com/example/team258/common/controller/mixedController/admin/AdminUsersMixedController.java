@@ -20,21 +20,6 @@ import java.util.stream.Collectors;
 public class AdminUsersMixedController {
     private final UserRepository userRepository;
     private final UserService userService;
-//    @GetMapping("/admin/users")
-//    public String adminView(@RequestParam(defaultValue = "0") int page, Model model) {
-//
-//        PageRequest pageRequest = PageRequest.of(page, 5);  // page 파라미터로 받은 값을 사용
-//        Page<User> users = userRepository.findAll(pageRequest);
-//        int totalPages = users.getTotalPages();
-//
-//        List<UserResponseDto> userResponseDtos = users.stream().map(UserResponseDto::new).collect(Collectors.toList());
-//
-//        model.addAttribute("currentPage", page);  // 현재 페이지 번호 추가
-//        model.addAttribute("totalPages", totalPages);
-//        model.addAttribute("users", userResponseDtos);
-//
-//        return "admin";
-//    }
 
     /**
      * 관리자 - 사용자 관리 페이지

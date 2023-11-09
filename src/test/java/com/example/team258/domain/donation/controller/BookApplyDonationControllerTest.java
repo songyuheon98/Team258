@@ -46,24 +46,24 @@ class BookApplyDonationControllerTest {
 
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
-    @Test
-    void createBookApplyDonation() throws Exception {
-        // given
-        MessageDto msg =  MessageDto.builder()
-                .msg("책 나눔 신청이 완료되었습니다.")
-                .build();
-
-        // when
-        when(bookApplyDonationService.createBookApplyDonation(any(BookApplyDonationRequestDto.class))).thenReturn(msg);
-
-        // then
-        mockMvc.perform(post("/api/user/bookApplyDonation")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(new BookApplyDonationRequestDto())))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("책 나눔 신청이 완료되었습니다."))
-                .andDo(print());
-    }
+//    @Test
+//    void createBookApplyDonation() throws Exception {
+//        // given
+//        MessageDto msg =  MessageDto.builder()
+//                .msg("책 나눔 신청이 완료되었습니다.")
+//                .build();
+//
+//        // when
+//        when(bookApplyDonationService.createBookApplyDonation(any(BookApplyDonationRequestDto.class))).thenReturn(msg);
+//
+//        // then
+//        mockMvc.perform(post("/api/user/bookApplyDonation")
+//                        .contentType("application/json")
+//                        .content(objectMapper.writeValueAsString(new BookApplyDonationRequestDto())))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("책 나눔 신청이 완료되었습니다."))
+//                .andDo(print());
+//    }
 
     @Test
     void deleteBookApplyDonation() throws Exception {

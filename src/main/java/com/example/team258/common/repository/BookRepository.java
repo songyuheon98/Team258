@@ -18,6 +18,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +53,25 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
     @Query("select count(b) FROM book b")
     Long getMaxCount();
 
+
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select b from book b " +
+            "left join fetch b.bookApplyDonation  " +
+            "where b.bookId = :bookId")
+    Optional<Book> findByIdFetch(@Param("bookId") Long bookId);
+
+    @Query("select b from book b " +
+            "left join fetch b.bookRent  " +
+            "where b.bookId = :bookId")
+    Optional<Book> findByIdFetchBookRent(@Param("bookId") Long bookId);
+
+
+//
+//        @Query(value = "SELECT b FROM book b ",
+//                nativeQuery = false)
+//        Slice<Book> findAllSliceBooks(BooleanBuilder builder,Pageable pageable);
+
     @Query(value = "SELECT * FROM book b WHERE MATCH(b.book_name) AGAINST(:tmp IN boolean mode) AND b.book_category_id IN :bookCategories", nativeQuery = true)
     Slice<Book> findAllByCategoriesAndBookNameContainingFTI(Pageable pageable, @Param("bookCategories") List<Long> bookCategories, @Param("tmp") String tmp);
 
@@ -64,12 +84,5 @@ public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredi
 
     @Query("SELECT b FROM book b")
     Slice<Book> findAllAsSlice(Pageable pageable);
-
-
-//
-//        @Query(value = "SELECT b FROM book b ",
-//                nativeQuery = false)
-//        Slice<Book> findAllSliceBooks(BooleanBuilder builder,Pageable pageable);
-
 
 }

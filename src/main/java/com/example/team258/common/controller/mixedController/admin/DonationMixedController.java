@@ -3,18 +3,13 @@ package com.example.team258.common.controller.mixedController.admin;
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.dto.BookResponsePageDto;
 import com.example.team258.common.dto.DonationV3ServiceResultDto;
-import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.repository.BookRepository;
-import com.example.team258.domain.donation.dto.BookDonationEventPageResponseDto;
-import com.example.team258.domain.donation.dto.BookDonationEventPageResponseDtoV3;
-import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
-import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.example.team258.domain.donation.service.BookService;
+import com.example.team258.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin/donation")
@@ -34,6 +26,7 @@ public class DonationMixedController {
     private final BookApplyDonationService bookApplyDonationService;
     private final BookRepository bookRepository;
     private final BookService bookService;
+    private final KafkaProducerService producer;
 
 //    @GetMapping
 //    public String donation(Model model) {
@@ -59,19 +52,19 @@ public class DonationMixedController {
      * 관리자 - 책 나눔 이벤트 관리 페이지 v3
      * @param eventPage : 현재 이벤트 페이지
      * @param bookPage :  현재 이벤트에 대한 도서들 페이지
-     * @param eventPagesize : 이벤트를 표시할 개수 (페이지)
-     * @param bookPagesize : 이벤트에 대한 도서들을 표시할 개수 (페이지)
+     * @param eventPageSize : 이벤트를 표시할 개수 (페이지)
+     * @param bookPageSize : 이벤트에 대한 도서들을 표시할 개수 (페이지)
      * @param model : 모델
      * @return : 뷰
      */
     @GetMapping("/v3")
     public String donationV3(@RequestParam(defaultValue = "0") int eventPage, @RequestParam(defaultValue = "0") int[] bookPage,
-                             @RequestParam(defaultValue = "3") int eventPagesize, @RequestParam(defaultValue = "3") int bookPagesize,
+                             @RequestParam(defaultValue = "3") int eventPageSize, @RequestParam(defaultValue = "3") int bookPageSize,
                              Model model) {
 
-        PageRequest eventPageRequest = PageRequest.of(eventPage, eventPagesize);  // page 파라미터로 받은 값을 사용
-
-        DonationV3ServiceResultDto donationV3ServiceResultDto = bookDonationEventService.donationV3Service(bookPage,  bookPagesize,eventPageRequest);
+        PageRequest eventPageRequest = PageRequest.of(eventPage, eventPageSize);  // page 파라미터로 받은 값을 사용
+        
+        DonationV3ServiceResultDto donationV3ServiceResultDto = bookDonationEventService.donationV3Service(bookPage,  bookPageSize,eventPageRequest);
 
         model.addAttribute("events", donationV3ServiceResultDto.getBookDonationEventPageResponseDtoV3().getBookDonationEventResponseDtoV3());
         model.addAttribute("currentEventPage", eventPage);  // 현재 페이지 번호 추가

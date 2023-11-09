@@ -116,7 +116,104 @@ public class SearchMixedController {
         return "users/searchV2";
     }
 
+    // 더보기 기능 구현 초기 페이지 진입
+    @GetMapping("/search/lm1")
+    public String loadMoreResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+                                  Model model) {
+
+        long startTime = System.currentTimeMillis(); // 실행시간 측정
+
+        // 페이지 요청 시, 현재까지의 모든 페이지를 가져오도록 수정
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("books", bookResponseDtoLoadMore.getContent());
+        model.addAttribute("hasNext", bookResponseDtoLoadMore.hasNext());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "users/searchLM1";
+    }
+
+    // 무한스크롤 기능 구현 초기 페이지 진입
+    @GetMapping("/search/is1")
+    public String infinityScrollResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                        @RequestParam(value = "keyword", required = false) String keyword,
+                                        @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+                                        Model model) {
+
+        long startTime = System.currentTimeMillis(); // 실행시간 측정
+
+        // 페이지 요청 시, 현재까지의 모든 페이지를 가져오도록 수정
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("books", bookResponseDtoLoadMore.getContent());
+        model.addAttribute("hasNext", bookResponseDtoLoadMore.hasNext());
+
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+
+        return "users/searchIS1";
+    }
+
+    // 더보기 기능 구현 추가 페이지 로드
+    @GetMapping("/search/loadMore")
+    @ResponseBody
+    public ResponseEntity<List<BookResponseLoadMoreDto>> loadMoreResults(
+            @RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page) {
+
+        long startTime = System.currentTimeMillis();
+
+
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
+        List<BookResponseLoadMoreDto> responseList = Collections.singletonList(
+                new BookResponseLoadMoreDto(bookResponseDtoLoadMore.getContent())
+        );
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s");
+
+        return ResponseEntity.ok(responseList);
+    }
+
+
     @GetMapping("/search/fti")
+    public String mySearchViewFTI(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                  @RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                                  Model model) {
+
+        long startTime = System.currentTimeMillis();//실행시간 측정
+        // Slice로 변경
+        Slice<BookResponseDto> bookResponseDtoSlice = searchService.getAllBooksByCategoryOrKeywordFTI(bookCategoryName,keyword,page-1);
+
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("books", bookResponseDtoSlice.getContent());
+        model.addAttribute("hasNext", bookResponseDtoSlice.hasNext());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "users/searchV2";
+    }
+  
+  @GetMapping("/search/fti")
     public String mySearchViewFTI(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
                                 @RequestParam(value = "keyword", required = false) String keyword,
                                 @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
@@ -159,6 +256,4 @@ public class SearchMixedController {
 
         return ResponseEntity.ok(responseList);
     }
-
-
 }

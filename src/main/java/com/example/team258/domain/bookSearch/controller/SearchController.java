@@ -57,4 +57,21 @@ public class SearchController {
         }
         return ResponseEntity.ok(searchService.getAllBooksByCategoryOrKeyword(bookCategoryName,keyword,page-1));
     }
+
+    //@GetMapping("/search-lm1")
+    //public ResponseEntity<Slice<BookResponseDto>> getMoreBooksByCategoryOrKeyword(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+    //                                                                             @RequestParam(value = "keyword", required = false) String keyword,
+    //                                                                             @RequestParam(value = "page") int page) {
+    //    if(bookCategoryName==null){
+    //        return ResponseEntity.ok(searchService.getAllBooksByKeyword(keyword,page-1));
+    //    } else if(keyword == null){
+    //        return ResponseEntity.ok(searchService.getAllBooksByCategory(bookCategoryName,page-1));
+    //    }
+    //
+    //    // 추가된 부분: 두 번째 조회에 대한 로그
+    //    System.out.println("Controller - getMoreBooksByCategoryOrKeyword: bookCategoryName=" + bookCategoryName + ", keyword=" + keyword + ", page=" + (page - 1));
+    //
+    //    return ResponseEntity.ok(searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page - 1));
+    //}
+
 }
