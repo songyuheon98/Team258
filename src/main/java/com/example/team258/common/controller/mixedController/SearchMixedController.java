@@ -116,6 +116,7 @@ public class SearchMixedController {
         return "users/searchV2";
     }
 
+
     // 더보기 기능 구현 초기 페이지 진입
     @GetMapping("/search/lm1")
     public String loadMoreResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
@@ -157,15 +158,18 @@ public class SearchMixedController {
         model.addAttribute("books", bookResponseDtoLoadMore.getContent());
         model.addAttribute("hasNext", bookResponseDtoLoadMore.hasNext());
 
+
         long endTime = System.currentTimeMillis();
         long durationTimeSec = endTime - startTime;
         System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
 
         return "users/searchIS1";
     }
 
     // 더보기 기능 구현 추가 페이지 로드
     @GetMapping("/search/loadMore")
+
     @ResponseBody
     public ResponseEntity<List<BookResponseLoadMoreDto>> loadMoreResults(
             @RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
@@ -174,7 +178,9 @@ public class SearchMixedController {
 
         long startTime = System.currentTimeMillis();
 
+
         Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getMoreBooksByCategoryOrKeyword(bookCategoryName, keyword, page);
+
 
         List<BookResponseLoadMoreDto> responseList = Collections.singletonList(
                 new BookResponseLoadMoreDto(bookResponseDtoLoadMore.getContent())
@@ -189,9 +195,9 @@ public class SearchMixedController {
 
     @GetMapping("/search/fti")
     public String mySearchViewFTI(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
-                                  @RequestParam(value = "keyword", required = false) String keyword,
-                                  @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-                                  Model model) {
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                                Model model) {
 
         long startTime = System.currentTimeMillis();//실행시간 측정
         // Slice로 변경
@@ -206,6 +212,29 @@ public class SearchMixedController {
         long durationTimeSec = endTime - startTime;
         System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
 
-        return "users/searchV2";
+        return "users/searchFTI";
     }
+
+    @GetMapping("/search/loadMorefti")
+    @ResponseBody
+    public ResponseEntity<List<BookResponseLoadMoreDto>> loadMoreResultsFTI(
+            @RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page) {
+
+        long startTime = System.currentTimeMillis();
+
+        Slice<BookResponseDto> bookResponseDtoLoadMore = searchService.getAllBooksByCategoryOrKeywordFTI(bookCategoryName, keyword, page);
+
+        List<BookResponseLoadMoreDto> responseList = Collections.singletonList(
+                new BookResponseLoadMoreDto(bookResponseDtoLoadMore.getContent())
+        );
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s");
+
+        return ResponseEntity.ok(responseList);
+    }
+
 }
