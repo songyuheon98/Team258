@@ -63,11 +63,13 @@ public class BookApplyDonationController {
 
         MessageKafkaDto messageKafkaDto = future.get(); // 결과를 기다립니다.
 
+
         return ResponseEntity.ok().body(messageKafkaDto.getMessageDto());
     }
     @KafkaListener(topics = "user-event-apply-output-topic", groupId = "user-event-apply-consumer-group${GROUP_ID}",
     containerFactory = "kafkaListenerContainerFactory2")
     public void AdminUserManagementConsumer(String message) throws JsonProcessingException {
+
         MessageKafkaDto messageKafkaDto = objectMapper.readValue(message, MessageKafkaDto.class);
 
         CompletableFuture<MessageKafkaDto> future = futures.get(messageKafkaDto.getCorrelationId());
@@ -97,6 +99,7 @@ public class BookApplyDonationController {
 
     @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
+
         return ResponseEntity.ok().body(bookApplyDonationService.deleteBookApplyDonation(applyId));
     }
 
