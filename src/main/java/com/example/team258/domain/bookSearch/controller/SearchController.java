@@ -34,18 +34,6 @@ public class SearchController {
         return ResponseEntity.ok(searchService.getBookById(bookId));
     }
 
-//    @GetMapping("/search")
-//    public Page<BookResponseDto> getAllBooksByCategory(@RequestParam("bookCategoryName") String bookCategoryName,
-//                                                       @RequestParam("page") int page) {
-//        return searchService.getAllBooksByCategory(bookCategoryName,page);
-//    }
-//
-//    @GetMapping("/search")
-//    public Page<BookResponseDto> getAllBooksByKeyword(@RequestParam("keyword") String keyword,
-//                                                      @RequestParam("page") int page) {
-//        return searchService.getAllBooksByKeyword(keyword,page);
-//    }
-
     @GetMapping("/search")
     public ResponseEntity<Page<BookResponseDto>> getAllBooksByCategoryOrKeyword(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
                                                                                 @RequestParam(value = "keyword", required = false) String keyword,
