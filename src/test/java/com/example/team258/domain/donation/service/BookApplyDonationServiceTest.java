@@ -84,12 +84,12 @@ class BookApplyDonationServiceTest {
                 .build();
 
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(BookApplyDonation.builder().build());
 
         // when
@@ -208,12 +208,12 @@ class BookApplyDonationServiceTest {
                 .build();
 
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(BookApplyDonation.builder().build());
 
         // when

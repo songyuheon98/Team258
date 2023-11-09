@@ -16,6 +16,7 @@ import com.example.team258.domain.donation.repository.BookApplyDonationRepositor
 import com.example.team258.domain.donation.repository.BookDonationEventRepository;
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.UserRepository;
+import com.example.team258.domain.donation.service.BookApplyDonationService2;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ import static org.mockito.Mockito.*;
 class BookApplyDonationServiceUnitTest {
     @Mock private BookDonationEventRepository bookDonationEventRepository;
     @Mock private BookApplyDonationRepository bookApplyDonationRepository;
+    @Mock private BookApplyDonationService2 bookApplyDonationService2;
     @Mock private BookRepository bookRepository;
     @Mock private UserRepository userRepository;
     @Mock private SecurityUtil securityUtil;
@@ -56,7 +58,7 @@ class BookApplyDonationServiceUnitTest {
         /**
          * BookApplyDonationService 객체 생성
          */
-        bookApplyDonationService = new BookApplyDonationService(bookRepository, bookDonationEventRepository, bookApplyDonationRepository, userRepository);
+        bookApplyDonationService = new BookApplyDonationService(bookRepository, bookDonationEventRepository, bookApplyDonationRepository, userRepository,bookApplyDonationService2);
 
         /**
          * SecurityUtil의 static 메서드를 mock하기 위한 객체 생성
@@ -101,10 +103,10 @@ class BookApplyDonationServiceUnitTest {
                 .build();
 
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(bookApplyDonation);
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
 
         // when
         MessageDto result = bookApplyDonationService.createBookApplyDonation(
@@ -182,10 +184,10 @@ class BookApplyDonationServiceUnitTest {
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder().applyId(1L).applyDate(LocalDateTime.parse("2021-08-01T00:00:00")).build();
 
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.empty());
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(bookApplyDonation);
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
 
         // when
         //then
@@ -208,10 +210,10 @@ class BookApplyDonationServiceUnitTest {
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder().applyId(1L).applyDate(LocalDateTime.parse("2021-10-01T00:00:00")).build();
 
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(bookApplyDonation);
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
 
         // when
         MessageDto result = bookApplyDonationService.createBookApplyDonation(
@@ -236,10 +238,10 @@ class BookApplyDonationServiceUnitTest {
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder().applyId(1L).applyDate(LocalDateTime.parse("2021-10-01T00:00:00")).build();
 
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(bookApplyDonation);
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.empty());
 
         // when
         //then

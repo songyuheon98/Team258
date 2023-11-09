@@ -4,9 +4,9 @@ import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookCategory;
 import com.example.team258.common.entity.QBook;
+import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.CustomBookRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
-import com.example.team258.common.repository.BookRepository;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -23,7 +23,7 @@ public class SearchService {
     private final BookRepository bookRepository;
     private final BookCategoryRepository bookCategoryRepository;
     private final CustomBookRepository customBookRepository;
-
+    //private final ElasticBookRepository elasticBookRepository;
 
     public Page<BookResponseDto> getAllBooks(int page) {
         Sort sort = Sort.by(Sort.Direction.ASC,"bookId");
@@ -150,6 +150,40 @@ public class SearchService {
         System.out.println(bookList.hasNext());
         return bookList;
     }
+
+
+    //더보기용 서비스
+    public Slice<BookResponseDto> getMoreBooksByCategoryOrKeyword(String bookCategoryName, String keyword, int page) {
+        QBook qBook = QBook.book;
+        BooleanBuilder builder = new BooleanBuilder();
+        List<BookCategory> bookCategories = new ArrayList<>(); // 초기화
+
+        if (bookCategoryName != null) {
+            BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
+            if (bookCategory != null) { // null 체크 추가
+                bookCategories = saveAllCategories(bookCategory);
+            }
+        }
+
+        if (keyword != null)
+            builder.and(qBook.bookName.contains(keyword));
+        if (!bookCategories.isEmpty()) // 리스트가 비어있는지 확인
+            builder.and(qBook.bookCategory.in(bookCategories));
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "bookId");
+        Pageable pageable = PageRequest.of(page, 20, sort);
+
+        // Slice로 추가 로드 데이터 가져오기
+        Slice<BookResponseDto> bookList = customBookRepository.findAllSliceBooks(builder, pageable).map(BookResponseDto::new);
+        System.out.println(bookList.hasNext());
+
+        return bookList;
+    }
+
+    //// Elasticsearch 기본 키워드 검색 비지니스 로직
+    //public List<ElasticsearchBook> searchBooksByKeyword(String keyword) {
+    //    return elasticBookRepository.findByBookNameContaining(keyword);
+    //}
 
     public Slice<BookResponseDto> getAllBooksByCategoryOrKeywordFTI(String bookCategoryName, String keyword, int page) {
 
