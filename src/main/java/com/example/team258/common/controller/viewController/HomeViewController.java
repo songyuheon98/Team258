@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeViewController {
 
-    @GetMapping("/")
-    public String homeView() {
-        return "users/searchIS1";
-    }
+    //@GetMapping("/")
+    //public String homeView() {
+    //    return "index";
+    //}
+
+
 }
