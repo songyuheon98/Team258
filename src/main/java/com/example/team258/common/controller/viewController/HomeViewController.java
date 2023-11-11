@@ -10,6 +10,6 @@ public class HomeViewController {
 
     @GetMapping("/")
     public String homeView() {
-        return "index";
+        return "users/searchIS1";
     }
 }

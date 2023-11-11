@@ -38,6 +38,25 @@
                 contents.style.maxHeight = (100 - (headerHeight / window.innerHeight) * 100) + 'vh';
             }
         }
+        function confirmLogout() {
+            if (confirm("로그아웃하시겠습니까?")) {
+                performLogout(); // 사용자가 확인하면 로그아웃 수행
+            } else {
+                // 사용자가 취소하면 아무 작업도 수행하지 않음
+            }
+        }
+
+        function performLogout() {
+            fetch('/logout')
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.msg); // "로그아웃 성공" 메시지를 알림으로 표시
+                    window.location.href = '/login'; // 로그아웃 후 로그인 페이지로 이동
+                })
+                .catch(error => {
+                    console.error('로그아웃 요청 중 오류 발생:', error);
+                });
+        }
     </script>
 
 
@@ -63,6 +82,7 @@
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
                 <!-- user private function-->
                 <li class="nav-item"><a class="nav-link" id="loginbtn" href="/login">Login</a></li>
+                <li class="nav-item"><a class="nav-link" id="logoutbtn" href="#" onclick="confirmLogout()">Logout</a></li>
                 <li class="nav-item"><a class="nav-link" id="signupbtn" href="/signup">SignUp</a></li>
                 <!-- Search -->
                 <li class="nav-item"><a class="nav-link" href="/search/v4">BookSearch</a></li>
