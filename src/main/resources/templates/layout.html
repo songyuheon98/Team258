@@ -65,8 +65,16 @@
                 <li class="nav-item"><a class="nav-link" id="loginbtn" href="/login">Login</a></li>
                 <li class="nav-item"><a class="nav-link" id="signupbtn" href="/signup">SignUp</a></li>
                 <!-- Search -->
-                <li class="nav-item"><a class="nav-link" href="/search/v4">BookSearch</a></li>
-
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownSearch" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Search</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/v3">BookSearchPage</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/v4">BookSearchSlice</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/is1">BookSearchIS</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/el1">BookElasticSearch</a></li>
+                        <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
+                    </ul>
+                </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
@@ -77,8 +85,6 @@
                     <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
                 </ul>
             </li>
-
-
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownAdmin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">

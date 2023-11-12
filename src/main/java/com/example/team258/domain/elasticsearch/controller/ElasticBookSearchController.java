@@ -1,5 +1,6 @@
 package com.example.team258.domain.elasticsearch.controller;
 
+import com.example.team258.common.jwt.SecurityUtil;
 import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
 import com.example.team258.domain.elasticsearch.service.ElasticBookService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 public class ElasticBookSearchController {
 
     private final ElasticBookService elasticBookService;
-
     // Elasticsearch + 무한스크롤 기능 구현 초기 페이지 진입
     @GetMapping("/search/el1")
     public String elasticSearchResults(
