@@ -20,6 +20,7 @@ public class LoginViewController {
             role = "ANONYMOUS";
 
         model.addAttribute("loginUserRole", role);
+
         return "login";
     }
 }
