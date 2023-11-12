@@ -1,5 +1,6 @@
 package com.example.team258.common.controller.mixedController.admin;
 
+import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.member.dto.UserResponseDto;
 import com.example.team258.common.entity.User;
 import com.example.team258.common.repository.UserRepository;
@@ -7,6 +8,8 @@ import com.example.team258.common.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +44,16 @@ public class AdminUsersMixedController {
         model.addAttribute("currentPage", page);  // 현재 페이지 번호 추가
         model.addAttribute("totalPages", users.getTotalPages());
         model.addAttribute("users", userResponseDtos);
+
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
 
         return "adminV2";
     }

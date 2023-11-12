@@ -5,6 +5,7 @@ import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.repository.BookRepository;
+import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.donation.dto.BookDonationEventOnlyPageResponseDto;
 import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
 import com.example.team258.domain.donation.entity.BookApplyDonation;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +39,16 @@ public class BookDonationEventMixedController {
     public String bookDonation(Model model) {
         List<BookDonationEventResponseDto> bookResponseDtos = bookDonationEventService.getDonationEvent();
         model.addAttribute("events", bookResponseDtos);
+
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
 
         return "users/bookDonationEvent";
     }
@@ -63,6 +76,15 @@ public class BookDonationEventMixedController {
         model.addAttribute("totalPages", bookDonationEventOnlyPageResponseDto.getTotalpages());
         model.addAttribute("events", bookDonationEventOnlyPageResponseDto.getBookDonationEventOnlyResponseDtos());
 
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
 
         return "users/bookDonationEventV2";
     }
@@ -88,6 +110,17 @@ public class BookDonationEventMixedController {
         model.addAttribute("books", bookApplyDonationEventResultDto.getBookResponseDtos());
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPages", bookApplyDonationEventResultDto.getTotalPages());
+
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
+
 
         return "users/bookApplyDonationV2";
     }

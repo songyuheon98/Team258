@@ -19,12 +19,11 @@ public class AboutUsViewController {
         SecurityContext securityContextHolder = SecurityContextHolder.getContext();
         Object principal = securityContextHolder.getAuthentication().getPrincipal();
         String role = "";
-        if(principal instanceof UserDetailsImpl){
+        if(principal instanceof UserDetailsImpl)
             role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
-        }
-        else {
+        else
             role = "ANONYMOUS";
-        }
+
         model.addAttribute("loginUserRole", role);
         return "about258";
     }

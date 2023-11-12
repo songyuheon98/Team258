@@ -5,12 +5,15 @@ import com.example.team258.common.dto.BookResponsePageDto;
 import com.example.team258.common.dto.DonationV3ServiceResultDto;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.repository.BookRepository;
+import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.example.team258.domain.donation.service.BookService;
 import com.example.team258.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +55,16 @@ public class DonationMixedController {
         model.addAttribute("totalPages", donationV3ServiceResultDto.getBookDonationEventPageResponseDtoV3().getTotalPages());
         model.addAttribute("totalBookPages", donationV3ServiceResultDto.getBookPageTotals());
 
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
+
         return "admin/donationV3";
     }
 
@@ -79,6 +92,16 @@ public class DonationMixedController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", bookResponsePageDto.getTotalPages());
         model.addAttribute("donationId", donationId);
+
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
 
         return "admin/bookSettingV2";
     }
