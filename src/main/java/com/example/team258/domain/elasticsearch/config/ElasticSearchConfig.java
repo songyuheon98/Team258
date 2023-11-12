@@ -3,6 +3,7 @@ package com.example.team258.domain.elasticsearch.config;
 import com.example.team258.domain.elasticsearch.repository.ElasticBookSearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
@@ -16,6 +17,9 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableElasticsearchRepositories(basePackageClasses = {ElasticBookSearchRepository.class})
 @Configuration
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
+    //@Value("${elasticsearch.hosts}")
+    //private String elasticsearchHosts;
+
     @Bean
     public ElasticsearchOperations customElasticsearchTemplate(@Qualifier("elasticsearchClient") RestHighLevelClient client) {
         return new ElasticsearchRestTemplate(client);
