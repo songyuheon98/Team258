@@ -9,7 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -32,6 +38,11 @@ class BookApplyDonationCancelMixedControllerTest {
     @DisplayName("유저 책 이벤트 신청 취소 페이지 테스트")
     void bookApplyDonationCancelPage() throws Exception {
         // given
+        Authentication auth = new UsernamePasswordAuthenticationToken("user", "password", Collections.emptyList());
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(auth);
+        SecurityContextHolder.setContext(securityContext);
+
         // when
         when(bookApplyDonationService.getDonationBooksCancel()).thenReturn(new UserBookApplyCancelPageResponseDto());
 

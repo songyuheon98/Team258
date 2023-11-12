@@ -45,15 +45,15 @@ public class AdminUsersMixedController {
         model.addAttribute("totalPages", users.getTotalPages());
         model.addAttribute("users", userResponseDtos);
 
-        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
-        Object principal = securityContextHolder.getAuthentication().getPrincipal();
-        String role = "";
-        if(principal instanceof UserDetailsImpl)
-            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
-        else
-            role = "ANONYMOUS";
-
-        model.addAttribute("loginUserRole", role);
+//        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+//        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+//        String role = "";
+//        if(principal instanceof UserDetailsImpl)
+//            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+//        else
+//            role = "ANONYMOUS";
+//
+//        model.addAttribute("loginUserRole", role);
 
         return "adminV2";
     }
