@@ -17,8 +17,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableElasticsearchRepositories(basePackageClasses = {ElasticBookSearchRepository.class})
 @Configuration
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
-    @Value("${elasticsearch.hosts}")
-    private String elasticsearchHosts;
+    //@Value("${elasticsearch.hosts}")
+    //private String elasticsearchHosts;
 
     @Bean
     public ElasticsearchOperations customElasticsearchTemplate(@Qualifier("elasticsearchClient") RestHighLevelClient client) {
@@ -27,7 +27,8 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     @Override
     public RestHighLevelClient elasticsearchClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(elasticsearchHosts) // application.properties에서 주석변경으로 로컬<->EC2 변경가능
+                //.connectedTo(elasticsearchHosts) // application.properties에서 주석변경으로 로컬<->EC2 변경가능
+                .connectedTo("43.200.91.27:9200") // EC2 인스턴스의 퍼블릭 IPv4 주소로 변경
                 .build();
         return RestClients.create(clientConfiguration).rest();
     }
