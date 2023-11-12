@@ -18,13 +18,13 @@
 
     <script>
         // JavaScript
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // 페이지 로드가 완료될 때 실행되는 코드
             adjustContentPosition();
         });
 
         // 화면 크기가 변할 때 실행되는 코드
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             adjustContentPosition();
         });
 
@@ -37,25 +37,6 @@
                 container.style.marginTop = headerHeight + 'px';
                 contents.style.maxHeight = (100 - (headerHeight / window.innerHeight) * 100) + 'vh';
             }
-        }
-        function confirmLogout() {
-            if (confirm("로그아웃하시겠습니까?")) {
-                performLogout(); // 사용자가 확인하면 로그아웃 수행
-            } else {
-                // 사용자가 취소하면 아무 작업도 수행하지 않음
-            }
-        }
-
-        function performLogout() {
-            fetch('/logout')
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.msg); // "로그아웃 성공" 메시지를 알림으로 표시
-                    window.location.href = '/login'; // 로그아웃 후 로그인 페이지로 이동
-                })
-                .catch(error => {
-                    console.error('로그아웃 요청 중 오류 발생:', error);
-                });
         }
     </script>
 
@@ -80,50 +61,73 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-                <!-- user private function-->
-                <li class="nav-item"><a class="nav-link" id="loginbtn" href="/login">Login</a></li>
-                <li class="nav-item"><a class="nav-link" id="logoutbtn" href="#" onclick="confirmLogout()">Logout</a></li>
-                <li class="nav-item"><a class="nav-link" id="signupbtn" href="/signup">SignUp</a></li>
+
+                <!-- Login, Signup 메뉴는 ANONYMOUS 역할에만 보임 -->
+                <li class="nav-item" th:if="${loginUserRole == 'ANONYMOUS'}"><a class="nav-link" id="loginbtn"
+                                                                                href="/login">Login</a></li>
+                <li class="nav-item" th:if="${loginUserRole == 'ANONYMOUS'}"><a class="nav-link" id="signupbtn"
+                                                                                href="/signup">SignUp</a></li>
+                <li class="nav-item" th:if="${loginUserRole == 'USER' or loginUserRole == 'ADMIN'}"><a class="nav-link" id="logoutbtn"
+                                                                                                       href="/logoutView">Logout</a></li>
                 <!-- Search -->
-                <li class="nav-item"><a class="nav-link" href="/search/v4">BookSearch</a></li>
-
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                    <li class="dropdown-item"><a class="dropdown-item" id="mypagebtn" href="/mypage">MyPage</a></li>
-                    <li class="dropdown-item"><a class="dropdown-item" id="myrentalsbtn" href="/myrentals">MyRentals</a></li>
-                    <li class="dropdown-item"><a class="dropdown-item" id="myreservationsbtn" href="/myreservations">MyReservations</a></li>
-                    <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
-                </ul>
-            </li>
-
-
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownAdmin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownSearch" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Search</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/v3">BookSearchPage</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/v4">BookSearchSlice</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/is1">BookSearchIS</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="/search/el1">BookElasticSearch</a></li>
+                        <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${loginUserRole == 'USER' or loginUserRole == 'ADMIN'}">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownUser" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                        <li class="dropdown-item"><a class="dropdown-item" id="mypagebtn" href="/mypage">MyPage</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="myrentalsbtn"
+                                                     href="/myrentals">MyRentals</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="myreservationsbtn"
+                                                     href="/myreservations">MyReservations</a></li>
+                        <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${loginUserRole == 'ADMIN'}">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownAdmin" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                         <!-- user Controller R,D-->
                         <!--                <li class="dropdown-item"><a class="dropdown-item" id="adminUserBtn" href="/admin/users">Admin Users</a></li>-->
-                        <li class="dropdown-item"><a class="dropdown-item" id="adminUserBtn" href="/admin/users/v2">Admin Users</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="adminUserBtn" href="/admin/users/v2">Admin
+                            Users</a></li>
                         <!-- admin book controller ( CRUD )-->
-                        <li class="dropdown-item"><a class="dropdown-item" id="adminBooksBtn" href="/admin/books">Admin Books</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="adminBooksBtn" href="/admin/books">Admin
+                            Books</a></li>
                         <!-- admin category controller ( CRUD ) -->
-                        <li class="dropdown-item"><a class="dropdown-item" id="adminCategoriesBtn" href="/admin/categories">Admin Categories</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="adminCategoriesBtn"
+                                                     href="/admin/categories">Admin Categories</a></li>
                         <!-- admin donation controller ( CRUD )-->
-                        <li class="dropdown-item"><a class="dropdown-item" id="adminDonationBtn" href="/admin/donation/v3">Admin Donation</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="adminDonationBtn"
+                                                     href="/admin/donation/v3">Admin Donation</a></li>
                     </ul>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownDonation" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Donation</a>
+                <li class="nav-item dropdown" th:if="${loginUserRole == 'USER' or loginUserRole == 'ADMIN'}">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownDonation" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Donation</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-<!--                        <li class="nav-item"><a class="nav-link" id="userBookDonationEventBtn" href="/users/bookDonationEvent">Book Donation Event List</a></li>-->
-                        <li class="dropdown-item"><a class="dropdown-item" id="userBookDonationEventBtn" href="/users/bookDonationEvent/v3">Book Donation Event List</a></li>
+                        <!--                        <li class="nav-item"><a class="nav-link" id="userBookDonationEventBtn" href="/users/bookDonationEvent">Book Donation Event List</a></li>-->
+                        <li class="dropdown-item"><a class="dropdown-item" id="userBookDonationEventBtn"
+                                                     href="/users/bookDonationEvent/v3">Book Donation Event List</a>
+                        </li>
                         <!--                Book Apply Cancel 유저 책 나눔 신청 취소-->
-                        <li class="dropdown-item"><a class="dropdown-item" id="userBookApplyCancel" href="/users/bookApplyDonation/cancel">Book Apply Cancel</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" id="userBookApplyCancel"
+                                                     href="/users/bookApplyDonation/cancel">Book Apply Cancel</a></li>
                     </ul>
                 </li>
-
 
                 <!-- About us -->
                 <li class="nav-item"><a class="nav-link active" href="/about258">About Team 258</a></li>
@@ -133,7 +137,7 @@
 </nav>
 
 <!-- Header -->
-<div class="index-header"  th:fragment="header">
+<div class="index-header" th:fragment="header">
     <div class="index-container1">
         <span class="index-text20"><span>Welcome to Library App</span></span>
         <span class="index-text22">

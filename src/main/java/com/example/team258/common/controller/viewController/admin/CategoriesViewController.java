@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,16 @@ public class CategoriesViewController {
         long endTime = System.currentTimeMillis();
         long durationTimeSec = endTime - startTime;
         System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
 
         return "admin/categories";
     }

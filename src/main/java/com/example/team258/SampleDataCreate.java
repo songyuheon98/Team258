@@ -22,7 +22,7 @@
 //    @PostConstruct
 //    public void init() {
 ////        initService.userInit();
-////        initService.bookInit();
+//        initService.bookInit();
 ////        initService.categoryInit();
 ////        initService.bookEventDonationInit();
 //    }

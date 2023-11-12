@@ -1,9 +1,13 @@
 package com.example.team258.domain.elasticsearch.controller;
 
+import com.example.team258.common.jwt.SecurityUtil;
+import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.elasticsearch.dto.ElasticBookResponseDto;
 import com.example.team258.domain.elasticsearch.service.ElasticBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +24,8 @@ import java.util.stream.Collectors;
 public class ElasticBookSearchController {
 
     private final ElasticBookService elasticBookService;
-
     // Elasticsearch + 무한스크롤 기능 구현 초기 페이지 진입
-    //@GetMapping("/search/el1")
-    @GetMapping("/")
+    @GetMapping("/search/el1")
     public String elasticSearchResults(
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -42,6 +44,16 @@ public class ElasticBookSearchController {
         long endTime = System.currentTimeMillis();
         long durationTimeSec = endTime - startTime;
         System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+        Object principal = securityContextHolder.getAuthentication().getPrincipal();
+        String role = "";
+        if(principal instanceof UserDetailsImpl)
+            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+        else
+            role = "ANONYMOUS";
+
+        model.addAttribute("loginUserRole", role);
 
         return "users/searchEL1";
     }

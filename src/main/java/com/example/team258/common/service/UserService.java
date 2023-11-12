@@ -98,6 +98,7 @@ public class UserService {
         return new ResponseEntity<>(new MessageDto("회원탈퇴가 완료되었습니다"), null, HttpStatus.OK);
     }
 
+
     @Transactional
     public void deleteUser(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
