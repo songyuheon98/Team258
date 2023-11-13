@@ -15,7 +15,7 @@ function search() {
     }
 
     // 검색 쿼리 생성 및 페이지 이동
-    url = `/search/el1?keyword=${keyword}&bookCategoryName=${category}&page=0`;
+    url = `/?keyword=${keyword}&bookCategoryName=${category}&page=0`;
     window.location.href = url;
 }
 // function search() {
