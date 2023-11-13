@@ -37,9 +37,14 @@ public class ElasticBookService {
                     .collect(Collectors.toList());
         }
 
-        return elasticBookSearchRepository.findByBookNameContains(keyword, pageable)
-            .stream()
-            .map(ElasticBookResponseDto::from)
-            .collect(Collectors.toList());
+        //return elasticBookSearchRepository.findByBookNameContains(keyword, pageable)
+        //    .stream()
+        //    .map(ElasticBookResponseDto::from)
+        //    .collect(Collectors.toList());
+
+        return elasticBookSearchRepository.findByQueryStringQuery(keyword, pageable)
+                .stream()
+                .map(ElasticBookResponseDto::from)
+                .collect(Collectors.toList());
     }
 }
