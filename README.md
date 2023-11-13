@@ -38,4 +38,5 @@ https://ohnyong.notion.site/Team-258-S-A-9940be1964354b9b9ec419acc6938480?pvs=4
 ![스크린샷 2023-10-11 오후 9 56 59](https://github.com/yzpocket/spring-cafeservice/assets/67217259/1ebaa55d-7390-4b48-8144-9cbb3a96aae0)
 
 ### Project Architecture
-![스크린샷 2023-10-05 오전 8 43 39](https://github.com/yzpocket/spring-cafeservice/assets/67217259/440cd15d-4077-4e0f-a666-b02c1321d6a9)
+![image](https://github.com/songyuheon98/Team258/assets/140541167/cb61d77e-05aa-4172-a0fc-2004aa7b37c4)
+
