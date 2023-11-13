@@ -30,7 +30,7 @@ public class BookRentScheduler {
             if (bookRent.getReturnDate().isAfter(LocalDateTime.now())) {
                 Book book = bookRent.getBook();
                 book.deleteRental();
-                bookRentRepository.deleteById(bookRent.getBookRentId()); //확인필요
+                bookRentRepository.deleteById(bookRent.getBookRentId());
 
                 //예약자가 있는 경우 첫번째 예약자가 바로 대출
                 if (!book.getBookReservations().isEmpty()) {

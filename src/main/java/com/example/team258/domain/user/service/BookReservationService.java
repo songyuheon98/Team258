@@ -1,17 +1,16 @@
 package com.example.team258.domain.user.service;
 
-import com.example.team258.domain.user.dto.BookReservationResponseDto;
-import com.example.team258.domain.user.repository.BookReservationRepository;
-import com.example.team258.domain.user.entity.BookRent;
-import com.example.team258.domain.user.entity.BookReservation;
 import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.entity.User;
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.UserRepository;
+import com.example.team258.domain.user.dto.BookReservationResponseDto;
+import com.example.team258.domain.user.entity.BookRent;
+import com.example.team258.domain.user.entity.BookReservation;
+import com.example.team258.domain.user.repository.BookReservationRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +52,7 @@ public class BookReservationService {
         }
         BookReservation bookReservation = bookReservationRepository.save(new BookReservation(savedUser, book));
         book.addBookReservation(bookReservation);
-        savedUser.addBookReservation(bookReservation);//하나의 메소드로 통합하는 방안도 확인 필요
+        savedUser.addBookReservation(bookReservation);
 
         return new MessageDto("도서 예약 신청이 완료되었습니다");
     }
