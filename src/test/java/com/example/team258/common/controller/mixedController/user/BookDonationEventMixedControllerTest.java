@@ -10,10 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,6 +42,11 @@ class BookDonationEventMixedControllerTest {
     @Test
     void bookDonation() throws Exception {
         //given
+        Authentication auth = new UsernamePasswordAuthenticationToken("user", "password", Collections.emptyList());
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(auth);
+        SecurityContextHolder.setContext(securityContext);
+
         // when
         when(bookDonationEventService.getDonationEvent()).thenReturn(new ArrayList<>());
 
@@ -50,6 +60,11 @@ class BookDonationEventMixedControllerTest {
     @Test
     void bookDonationEventOnlyV3() throws Exception {
         //given
+        Authentication auth = new UsernamePasswordAuthenticationToken("user", "password", Collections.emptyList());
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(auth);
+        SecurityContextHolder.setContext(securityContext);
+
         // when
         when(bookDonationEventService.getDonationEventOnlyV3(any(),any(),any(),any()))
                 .thenReturn(BookDonationEventOnlyPageResponseDto.builder().bookDonationEventOnlyResponseDtos(new ArrayList<>()).build());
@@ -62,6 +77,11 @@ class BookDonationEventMixedControllerTest {
     @Test
     void bookApplyDonationEventPageV2() throws Exception {
         //given
+        Authentication auth = new UsernamePasswordAuthenticationToken("user", "password", Collections.emptyList());
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(auth);
+        SecurityContextHolder.setContext(securityContext);
+
         // when
         when(bookDonationEventService.bookApplyDonationEventPageV2Result(any(),any())).thenReturn(new BookApplyDonationEventResultDto(new BookDonationEventResponseDto(), new ArrayList<>(),1));
 
