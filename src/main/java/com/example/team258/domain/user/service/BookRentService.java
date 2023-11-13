@@ -37,7 +37,7 @@ public class BookRentService {
     @Transactional
     public MessageDto createRental(Long bookId, User user) {
 
-            Book book = bookRepository.findById(bookId)
+            Book book = bookRepository.findByIdLock(bookId)
                     .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
             User savedUser = userRepository.findByIdFetchBookRent(user.getUserId())
                     .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
