@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class HomeViewController {
 
-    @GetMapping("/")
-    public String homeView(Model model) {
-        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
-        Object principal = securityContextHolder.getAuthentication().getPrincipal();
-        String role = "";
-        if(principal instanceof UserDetailsImpl)
-            role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
-        else
-            role = "ANONYMOUS";
-
-        model.addAttribute("loginUserRole", role);
-        return "index";
-    }
+    //@GetMapping("/")
+    //public String homeView(Model model) {
+    //    SecurityContext securityContextHolder = SecurityContextHolder.getContext();
+    //    Object principal = securityContextHolder.getAuthentication().getPrincipal();
+    //    String role = "";
+    //    if(principal instanceof UserDetailsImpl)
+    //        role = String.valueOf(((UserDetailsImpl) principal).getUser().getRole());
+    //    else
+    //        role = "ANONYMOUS";
+    //
+    //    model.addAttribute("loginUserRole", role);
+    //    return "index";
+    //}
 }
