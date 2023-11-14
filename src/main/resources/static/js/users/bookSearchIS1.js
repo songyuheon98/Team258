@@ -6,15 +6,22 @@ function search() {
     let keyword = document.getElementById('keyword').value;
     let category = document.getElementById('bookCategoryId').value;
 
+    // if(keyword != '' & category != '')
+    //     url = `/search/is1?keyword=${keyword}&bookCategoryName=${category}&page=0`
+    // else if(keyword == '' & category !='')
+    //     url = `/search/is1?bookCategoryName=${category}&page=0`
+    // else if(keyword != '' & category =='')
+    //     url = `/search/is1?keyword=${keyword}&page=0`
+    // else if(keyword == '' & category =='')
+    //     url = "/search/is1?page=0"
     if(keyword != '' & category != '')
-        url = `/search/is1?keyword=${keyword}&bookCategoryName=${category}&page=0`
+        url = `/?keyword=${keyword}&bookCategoryName=${category}&page=0`
     else if(keyword == '' & category !='')
-        url = `/search/is1?bookCategoryName=${category}&page=0`
+        url = `/?bookCategoryName=${category}&page=0`
     else if(keyword != '' & category =='')
-        url = `/search/is1?keyword=${keyword}&page=0`
+        url = `/?keyword=${keyword}&page=0`
     else if(keyword == '' & category =='')
-        url = "/search/is1?page=0"
-
+        url = "/?page=0"
     window.location.href = url;
 }
 

@@ -25,6 +25,7 @@ public class ElasticCustomBookSearchRepositoryImpl implements ElasticCustomBookS
 
     private final ElasticsearchOperations elasticsearchOperations;
 
+    //크리테리아는 복잡도가 높아서 사용하지 않는다.
     //@Override
     //public List<ElasticsearchBook> findByBookNameContains(String keyword, Pageable pageable){ // 안녕 하세요  안녕%20하세요
     //    Criteria criteria = Criteria.where("bookName").contains(keyword);
@@ -34,6 +35,32 @@ public class ElasticCustomBookSearchRepositoryImpl implements ElasticCustomBookS
     //            .map(SearchHit::getContent)
     //            .collect(Collectors.toList());
     //}
+
+    //@Override
+    //public List<ElasticsearchBook> findByBookNameContains(String keyword, Pageable pageable){
+    //    String[] keywords = keyword.split("\\s+"); //%20  [0] , [1]
+    //
+    //    List<Criteria> criteriaList = Arrays.stream(keywords)
+    //            .map(word -> Criteria.where("bookName").contains(word))
+    //            .collect(Collectors.toList());
+    //
+    //    Criteria criteria = new Criteria();
+    //    if (!criteriaList.isEmpty()) {
+    //        criteria = criteriaList.get(0);
+    //        for (int i = 1; i < criteriaList.size(); i++) {
+    //            criteria.or(criteriaList.get(i));
+    //        }
+    //    }
+    //
+    //    Query query = new CriteriaQuery(criteria).setPageable(pageable);
+    //    SearchHits<ElasticsearchBook> search = elasticsearchOperations.search(query, ElasticsearchBook.class);
+    //
+    //    return search.stream()
+    //            .map(SearchHit::getContent)
+    //            .collect(Collectors.toList());
+    //}
+
+
 
     // 기본형
     //@Override
@@ -67,27 +94,70 @@ public class ElasticCustomBookSearchRepositoryImpl implements ElasticCustomBookS
                 .collect(Collectors.toList());
     }
 
-    //@Override
-    //public List<ElasticsearchBook> findByBookNameContains(String keyword, Pageable pageable){
-    //    String[] keywords = keyword.split("\\s+"); //%20  [0] , [1]
-    //
-    //    List<Criteria> criteriaList = Arrays.stream(keywords)
-    //            .map(word -> Criteria.where("bookName").contains(word))
-    //            .collect(Collectors.toList());
-    //
-    //    Criteria criteria = new Criteria();
-    //    if (!criteriaList.isEmpty()) {
-    //        criteria = criteriaList.get(0);
-    //        for (int i = 1; i < criteriaList.size(); i++) {
-    //            criteria.or(criteriaList.get(i));
-    //        }
-    //    }
-    //
-    //    Query query = new CriteriaQuery(criteria).setPageable(pageable);
-    //    SearchHits<ElasticsearchBook> search = elasticsearchOperations.search(query, ElasticsearchBook.class);
-    //
-    //    return search.stream()
-    //            .map(SearchHit::getContent)
-    //            .collect(Collectors.toList());
-    //}
+
+
+
+    // QueryDSL로 작성 할 경우 참고 자료
+    // 의존성과 플러그인 등 세팅이 필요하다.
+
+    /*
+dependencies {
+    implementation 'com.querydsl:querydsl-apt:4.x.x'
+    implementation 'com.querydsl:querydsl-elasticsearch:4.x.x'
+}
+
+plugins {
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+
+querydsl {
+    jpa = false
+    querydslSourcesDir = 'src/main/generated'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/generated'
+        }
+    }
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+*/
+
+    // QueryDSL 구현체 모습은 다음과 같다.
+
+    /*
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.elasticsearch.ElasticsearchQuery;
+import com.querydsl.elasticsearch.ElasticsearchQueryFactory;
+
+public class ElasticBookSearchRepositoryImpl {
+
+    private final ElasticsearchQueryFactory queryFactory;
+
+    public ElasticBookSearchRepositoryImpl(ElasticsearchQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
+    }
+
+    public ElasticsearchQuery<ElasticsearchBook> findByQueryStringQuery(String queryString, Pageable pageable) {
+        QElasticsearchBook elasticsearchBook = QElasticsearchBook.elasticsearchBook;
+        StringPath bookName = elasticsearchBook.bookName;
+
+        return queryFactory
+                .selectFrom(elasticsearchBook)
+                .where(bookName.contains(queryString))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+    }
+}
+*/
 }

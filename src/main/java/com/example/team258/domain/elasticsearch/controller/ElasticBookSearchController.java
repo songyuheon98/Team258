@@ -25,7 +25,8 @@ public class ElasticBookSearchController {
 
     private final ElasticBookService elasticBookService;
     // Elasticsearch + 무한스크롤 기능 구현 초기 페이지 진입
-    @GetMapping("/")
+    //@GetMapping("/")
+    @GetMapping("/search/el1")
     public String elasticSearchResults(
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,

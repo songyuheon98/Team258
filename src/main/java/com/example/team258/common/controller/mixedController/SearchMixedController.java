@@ -197,7 +197,8 @@ public class SearchMixedController {
     }
 
     // 무한스크롤 기능 구현 초기 페이지 진입
-    @GetMapping("/search/is1")
+    //@GetMapping("/search/is1")
+    @GetMapping("/")
     public String infinityScrollResults(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
                                         @RequestParam(value = "keyword", required = false) String keyword,
                                         @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
