@@ -12,7 +12,7 @@ import java.util.List;
 public interface ElasticBookSearchRepository extends ElasticsearchRepository<ElasticsearchBook, Long>, ElasticCustomBookSearchRepository {
     // 이건 개발자가 직접 연산부를 작성하는 방식임
     // 제어권이 개발자에 있음
-    //List<ElasticsearchBook> findByBookNameContains(String keyword);
+    List<ElasticsearchBook> findByBookNameContains(String keyword);
 
     // Elasticsearch API의 쿼리문을 작성해서 변경해보는 방법
     // 이건 제어권이 Spring Data Elasticsearch 에 있음
