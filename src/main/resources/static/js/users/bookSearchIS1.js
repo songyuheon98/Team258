@@ -108,7 +108,6 @@ $(document).ready(function() {
     });
 
 
-
     function rentBook(bookId) {
         $.ajax({
             url: `/api/books/${bookId}/rental`,
