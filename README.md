@@ -2,7 +2,8 @@
 
 # 누리책마루
  도서관에 과도하게 쌓인 책을 필요로 하는 이들에게 나누는 것을 목표로 한 온라인 도서관 웹 플랫폼입니다.
- 
+### [누리책마루 브로셔](https://ohnyong.notion.site/33063e8c683c4e63aa4db53158ecf12d?pvs=4)
+   
 ## 💣 프로젝트 배경 
 사회적 문제인 공공 도서관의 도서 폐기 문제를, 책이 필요한 사람들에게 분배함으로써 해결할 수 있지 않을까 하는 아이디어에서 출발한 프로젝트입니다.
 
@@ -34,9 +35,6 @@
 ## ✅ 프로젝트 기록
 - [기술 블로그](https://ohnyong.notion.site/TechBlog-TEAM-258-1fcb896ca14947c58d46473f1f7436bd?pvs=4)
 - [개발 스토리](https://www.notion.so/ohnyong/8146a936122345d9b70b3567be86f11e?v=52dd3a612b454af684ad97438b735e2c)
-- [누리책마루 브로셔](https://ohnyong.notion.site/33063e8c683c4e63aa4db53158ecf12d?pvs=4)
-
-
 
 ## 🕰️ TEAM BLOG
 https://ohnyong.notion.site/TechBlog-TEAM-258-a1e222aa230d4caaac32452d8b425f2b?pvs=4
