@@ -47,7 +47,6 @@ https://ohnyong.notion.site/TechBlog-TEAM-258-a1e222aa230d4caaac32452d8b425f2b?p
 - 팀장 : 김인용 | https://github.com/yzpocket | https://www.citefred.com
 - 팀원 : 송유헌 | https://github.com/songyuheon98 | https://velog.io/@songyuheon
 - 팀원 : 조영익 | https://github.com/yame123 | https://inyasang.tistory.com
-- 팀원 : 정강용 | https://github.com/tuto3355 | https://naktaa.tistory.com
 
 ## 📌 주요 내용
 ### TEAM BLOG
